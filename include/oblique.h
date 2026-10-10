@@ -7,11 +7,13 @@ extern "C" {
 #define OP_MAX_ITEMS 256
 #define OP_MAX_BOXES 64
 #define OP_ID_SIZE 64
-#define OP_VERSION "0.4.1"
+#define OP_VERSION "0.5.0"
 typedef enum { OP_NONE=0, OP_FLAT=1, OP_ANY=2 } OpRotation;
-/* CONTACT (default): every product rests on the floor or on part of a lower
-   top face; no minimum supported fraction. FULL_BASE: the whole footprint. */
-typedef enum { OP_SUPPORT_FULL_BASE=0, OP_SUPPORT_CONTACT=1 } OpSupport;
+/* STABLE (default): on the floor, or the footprint centre lies over the
+   convex hull of the product's contacts with lower top faces, so a uniform
+   rigid product does not tip. CONTACT: any positive overlap, nothing floats
+   (fillers assumed). FULL_BASE: the whole footprint is supported. */
+typedef enum { OP_SUPPORT_FULL_BASE=0, OP_SUPPORT_CONTACT=1, OP_SUPPORT_STABLE=2 } OpSupport;
 /* Caller expands quantities. instance is a zero-based index within its item id. */
 typedef struct {
     char id[OP_ID_SIZE];
@@ -68,6 +70,8 @@ int op_inside(const OpPlacement *p,const OpBox *b,double gap);
 int op_supported(const OpPlacement *p,const OpPlacement *placed,int count);
 /* On the floor, or overlapping a coplanar top face with positive area. */
 int op_rests(const OpPlacement *p,const OpPlacement *placed,int count);
+/* Rests, and the footprint centre is inside the convex hull of the contacts. */
+int op_stable(const OpPlacement *p,const OpPlacement *placed,int count);
 double op_now_ms(void);
 #ifdef __cplusplus
 }

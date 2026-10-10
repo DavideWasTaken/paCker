@@ -48,7 +48,7 @@ double op_now_ms(void) {
     return (double)t.tv_sec*1000+(double)t.tv_nsec/1e6;
 #endif
 }
-void op_default_options(OpOptions *o) { *o=(OpOptions){15,1000,0,200000,42,8,OP_SUPPORT_CONTACT,0}; }
+void op_default_options(OpOptions *o) { *o=(OpOptions){15,1000,0,200000,42,8,OP_SUPPORT_STABLE,0}; }
 int op_inside(const OpPlacement *p,const OpBox *b,double gap) {
     Shape s=shape(p);
     double e=geometric_epsilon(p);
@@ -273,6 +273,47 @@ int op_rests(const OpPlacement *p,const OpPlacement *placed,int count) {
     }
     return 0;
 }
+static long double turn(SupportPoint o,SupportPoint a,SupportPoint b){return (a.x-o.x)*(b.y-o.y)-(a.y-o.y)*(b.x-o.x);}
+static int cmp_support_point(const void *a,const void *b) {
+    const SupportPoint *p=a,*q=b;
+    if(p->x!=q->x)return p->x<q->x?-1:1;
+    return (p->y>q->y)-(p->y<q->y);
+}
+/* Contacts are clipped in the product's frame and rescaled to physical units.
+   The centre must lie inside their convex hull by at least 4 epsilon. Points
+   beyond the buffer are dropped, which only shrinks the hull (conservative). */
+int op_stable(const OpPlacement *p,const OpPlacement *placed,int count) {
+    if(count<0||count>OP_MAX_ITEMS)return 0;
+    double e=geometric_epsilon(p);
+    if(fabs(p->z)<e)return 1;
+    Shape a=shape(p);
+    long double minimum=16.0L*e*((long double)p->width+p->length)/((long double)p->width*p->length);
+    SupportPoint pts[512],hull[1024];int n=0,rested=0;
+    for(int i=0;i<count;i++) {
+        const OpPlacement *q=&placed[i];
+        if(fabs(p->z-q->z-q->height)>e)continue;
+        SupportPoint poly[16];int m=support_polygon(p,a,q,poly);
+        long double area=0;
+        for(int k=0;k<m;k++){SupportPoint u=poly[k],v=poly[(k+1)%m];area+=u.x*v.y-v.x*u.y;}
+        if(fabsl(area)/2<=minimum)continue;
+        rested=1;
+        for(int k=0;k<m&&n<512;k++)pts[n++]=(SupportPoint){poly[k].x*p->width,poly[k].y*p->length};
+    }
+    if(!rested||n<3)return 0;
+    qsort(pts,(size_t)n,sizeof *pts,cmp_support_point);
+    int h=0;
+    for(int i=0;i<n;i++){while(h>=2&&turn(hull[h-2],hull[h-1],pts[i])<=0)h--;hull[h++]=pts[i];}
+    for(int i=n-2,lower=h+1;i>=0;i--){while(h>=lower&&turn(hull[h-2],hull[h-1],pts[i])<=0)h--;hull[h++]=pts[i];}
+    h--;
+    if(h<3)return 0;
+    SupportPoint centre={0,0};
+    for(int i=0;i<h;i++) {
+        SupportPoint u=hull[i],v=hull[(i+1)%h];
+        long double length=sqrtl((v.x-u.x)*(v.x-u.x)+(v.y-u.y)*(v.y-u.y));
+        if(turn(u,v,centre)<4.0L*e*length)return 0;
+    }
+    return 1;
+}
 static int range(double x,double lo,double hi){return isfinite(x)&&x>=lo&&x<=hi;}
 static int fail(char *e,int n,const char *msg){if(e&&n>0)snprintf(e,(size_t)n,"%s",msg);return 1;}
 static int valid(const OpRequest *r,char *e,int n) {
@@ -280,7 +321,7 @@ static int valid(const OpRequest *r,char *e,int n) {
     if(r->item_count<0||r->item_count>OP_MAX_ITEMS||r->box_count<0||r->box_count>OP_MAX_BOXES)return fail(e,n,"item or box limit exceeded");
     const OpOptions *o=&r->options;
     if(!range(o->angle_step,1,90)||floor(o->angle_step)!=o->angle_step||!range(o->time_limit_ms,1,60000)||!range(o->gap,0,1e6)||o->restarts<1||o->restarts>64||o->max_candidates<1||o->max_candidates>100000000||
-       (o->support!=OP_SUPPORT_FULL_BASE&&o->support!=OP_SUPPORT_CONTACT)||o->improve<0||o->improve>1)return fail(e,n,"invalid search options");
+       o->support<OP_SUPPORT_FULL_BASE||o->support>OP_SUPPORT_STABLE||o->improve<0||o->improve>1)return fail(e,n,"invalid search options");
     for(int i=0;i<r->item_count;i++) {
         const OpItem *a=&r->items[i];
         if(!memchr(a->id,0,OP_ID_SIZE)||!a->id[0]||!range(a->width,1e-4,1e6)||!range(a->length,1e-4,1e6)||!range(a->height,1e-4,1e6)||!range(a->weight,0,1e12)||a->rotation<0||a->rotation>2||a->diagonal<0||a->diagonal>1||a->instance<0||a->instance>=OP_MAX_ITEMS)return fail(e,n,"invalid item");
@@ -419,7 +460,11 @@ static int outside_support_bounds(const OpPlacement *p,Shape a,const SupportBoun
            (long double)p->y+a.hy>bounds->top+allowance;
 }
 static int resting(const Search *s,const OpPlacement *p,const OpPlacement *in,int count) {
-    return s->r->options.support==OP_SUPPORT_FULL_BASE?op_supported(p,in,count):op_rests(p,in,count);
+    switch(s->r->options.support) {
+        case OP_SUPPORT_FULL_BASE:return op_supported(p,in,count);
+        case OP_SUPPORT_CONTACT:return op_rests(p,in,count);
+        default:return op_stable(p,in,count);
+    }
 }
 static int pose_better(const OpPlacement *p,const OpPlacement *best,int mode) {
     Shape a=shape(p),b=shape(best);

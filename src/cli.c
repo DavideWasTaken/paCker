@@ -211,7 +211,8 @@ static int request_from_json(const cJSON *root, OpRequest *request, char *error)
         NUM(options,"seed",0,4294967295.0,1,0,o->seed,&value); o->seed = (unsigned)value;
         NUM(options,"max_candidates",1,100000000,1,0,(double)o->max_candidates,&value); o->max_candidates = (uint64_t)value;
         const cJSON *mode = member(options,"support_mode"), *improve = member(options,"improve");
-        if (mode) o->support = strcmp(mode->valuestring,"full_base") ? OP_SUPPORT_CONTACT : OP_SUPPORT_FULL_BASE;
+        if (mode) o->support = !strcmp(mode->valuestring,"full_base") ? OP_SUPPORT_FULL_BASE :
+                               !strcmp(mode->valuestring,"contact") ? OP_SUPPORT_CONTACT : OP_SUPPORT_STABLE;
         if (improve) {
             if (!cJSON_IsBool(improve)) return fail(error,"improve must be boolean");
             o->improve = cJSON_IsTrue(improve);
@@ -233,7 +234,8 @@ static cJSON *result_to_json(const OpRequest *request, const OpResult *result) {
     cJSON *root = cJSON_CreateObject();
     if (!root) return NULL;
     ADD_STR(root,"version",OP_VERSION);
-    ADD_STR(root,"support_mode",request->options.support == OP_SUPPORT_FULL_BASE ? "full_base" : "contact");
+    ADD_STR(root,"support_mode",request->options.support == OP_SUPPORT_FULL_BASE ? "full_base" :
+            request->options.support == OP_SUPPORT_CONTACT ? "contact" : "stable");
     ADD_STR(root,"status",result->unpacked_count ? "partial" : "complete");
     cJSON *bins = cJSON_AddArrayToObject(root,"bins"), *unpacked = cJSON_AddArrayToObject(root,"unpacked");
     if (!bins || !unpacked) goto oom;
@@ -298,7 +300,7 @@ int main(int argc, char **argv) {
     if (argc == 2 && !strcmp(argv[1],"--capabilities")) {
         puts("{\"protocol\":1,\"ordinary_version\":\"" OP_VERSION "\","
              "\"geometric_version\":\"" OP3_VERSION "\",\"schemas\":[1,2],"
-             "\"support_modes\":[\"contact\",\"full_base\",\"geometric\"],"
+             "\"support_modes\":[\"contact\",\"full_base\",\"geometric\",\"stable\"],"
              "\"rotations\":[\"none\",\"flat\",\"any\",\"free3d\"],"
              "\"limits\":{\"request_bytes\":1048576,\"json_depth\":16,"
              "\"expanded_items\":256,\"box_types\":64,\"id_utf8_bytes\":63}}");
@@ -336,9 +338,9 @@ int main(int argc, char **argv) {
     const cJSON *options = member(root, "options");
     const cJSON *mode = member(options, "support_mode");
     if (mode && (!cJSON_IsString(mode) ||
-        (strcmp(mode->valuestring, "contact") && strcmp(mode->valuestring, "full_base") &&
-         strcmp(mode->valuestring, "geometric")))) {
-        cJSON_Delete(root); return print_error("support_mode must be contact, full_base or geometric");
+        (strcmp(mode->valuestring, "stable") && strcmp(mode->valuestring, "contact") &&
+         strcmp(mode->valuestring, "full_base") && strcmp(mode->valuestring, "geometric")))) {
+        cJSON_Delete(root); return print_error("support_mode must be stable, contact, full_base or geometric");
     }
     if (mode && !strcmp(mode->valuestring, "geometric")) {
         Op3Request request; Op3Result result; char error[256] = {0};

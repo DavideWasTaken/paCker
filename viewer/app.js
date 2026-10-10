@@ -250,7 +250,7 @@ function showResult(result, request=null, source='import'){
 }
 function setRequestEditor(request){
   $('request').value=JSON.stringify(request,null,2);
-  $('support-mode').value=['geometric','full_base'].includes(request.options?.support_mode)?request.options.support_mode:'contact';
+  $('support-mode').value=['geometric','full_base','contact'].includes(request.options?.support_mode)?request.options.support_mode:'stable';
   $('padding').value=request.options?.support_mode==='geometric' ? (request.options?.clearance??0) : (request.options?.gap??0);
   updateModeHint();
 }

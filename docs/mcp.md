@@ -94,7 +94,7 @@ an item's `rotation` to `free3d`. `gap` must be zero; optional `clearance` is th
 geometric margin. `free3d` requires `diagonal: true` (the default). Geometric mode
 assumes padding supplied by the user and checks neither gravity nor insertion
 paths. See [schema 2](schema2.md) for its center/quaternion convention. Ordinary
-mode defaults to `contact` support (`full_base` on request) and accepts
+mode defaults to `stable` support (`contact` or `full_base` on request) and accepts
 `improve: true`; it forbids `free3d` and `clearance`.
 
 The CLI and adapter enforce 64 box types, 256 expanded product instances, 1 MiB

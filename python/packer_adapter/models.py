@@ -87,7 +87,7 @@ ORDINARY_REQUEST.pop('title', None)
 ORDINARY_REQUEST.pop('description', None)
 _ordinary_options = ORDINARY_REQUEST['properties']['options']
 _ordinary_options['required'] = []
-_ordinary_options['properties']['support_mode'] = {'enum': ['contact', 'full_base'], 'default': 'contact'}
+_ordinary_options['properties']['support_mode'] = {'enum': ['stable', 'contact', 'full_base'], 'default': 'stable'}
 _ordinary_options['properties']['improve'] = {'type': 'boolean', 'default': False}
 _ordinary_options['properties'].pop('clearance')
 _ordinary_options['properties']['gap'] = {'type': 'number', 'minimum': 0, 'maximum': 1000000, 'default': 0}
@@ -103,7 +103,7 @@ ORDINARY_RESULT.pop('description', None)
 for _key in ('schema_version', 'clearance'):
     ORDINARY_RESULT['properties'].pop(_key)
     ORDINARY_RESULT['required'].remove(_key)
-ORDINARY_RESULT['properties']['support_mode'] = {'enum': ['contact', 'full_base']}
+ORDINARY_RESULT['properties']['support_mode'] = {'enum': ['stable', 'contact', 'full_base']}
 ORDINARY_RESULT['properties']['version'] = {'type': 'string', 'minLength': 1, 'maxLength': 128}
 _placement = ORDINARY_RESULT['properties']['bins']['items']['properties']['items']['items']
 for _key in ('center', 'orientation'):

@@ -5,7 +5,7 @@ from decimal import localcontext
 from itertools import permutations
 
 from .ordinary_geometry import (PRECISION, clip_polygon, decimal, epsilon, full_support, vertices,
-                               pair_error, rests, walls)
+                               pair_error, rests, stable, walls)
 
 DIMENSIONS = ('width', 'length', 'height')
 MACHINE_EPSILON = 2**-52
@@ -84,10 +84,14 @@ def _source_support(p, groups, own, mode='full_base'):
         elif any(abs(decimal(q['z'])+decimal(q['height'])-decimal(p['z'])) <= epsilon(p)
                  for q in variants):
             ambiguous = True
-    if (full_support if mode == 'full_base' else rests)(p, supports):
+    check = {'full_base': full_support, 'contact': rests, 'stable': stable}[mode]
+    if check(p, supports):
         return None
-    return ('cannot verify ambiguous serialized dimensions' if ambiguous else
-            'unsupported footprint' if mode == 'full_base' else 'product rests on nothing')
+    if ambiguous:
+        return 'cannot verify ambiguous serialized dimensions'
+    if mode == 'full_base':
+        return 'unsupported footprint'
+    return 'product would tip' if mode == 'stable' and rests(p, supports) else 'product rests on nothing'
 
 
 def _request_errors(request):
@@ -146,7 +150,7 @@ def _request_errors(request):
               'time_limit_ms': (1, 60000, False), 'restarts': (1, 64, True),
               'seed': (0, 4294967295, True), 'max_candidates': (1, 100000000, True)}
     if fields(options, (*ranges, 'support_mode', 'improve'), 'options'):
-        if options.get('support_mode', 'contact') not in ('contact', 'full_base'):
+        if options.get('support_mode', 'stable') not in ('stable', 'contact', 'full_base'):
             errors.append('invalid support mode')
         if not isinstance(options.get('improve', False), bool):
             errors.append('invalid option improve')
@@ -221,13 +225,13 @@ def _result_errors(result):
 
 
 def validate(request, result, require_support=None, diagnostics=False):
-    """require_support None follows the request support_mode (default contact);
+    """require_support None follows the request support_mode (default stable);
     True demands full-base support and False checks no support at all."""
     errors = _request_errors(request) + _result_errors(result)
     if errors:
         return errors
     if require_support is None:
-        mode = request.get('options', {}).get('support_mode', 'contact')
+        mode = request.get('options', {}).get('support_mode', 'stable')
     else:
         mode = 'full_base' if require_support else None
 

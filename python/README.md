@@ -27,8 +27,9 @@ print('not packed:', result['unpacked'])
 
 - Box interior dimensions, no overlaps, weight limit per box, finite stock per box type.
 - Rotations per product: `none`, `flat` (keep height, default) or `any`; optional diagonal yaw.
-- Support: `contact` (default: every product rests on the floor or on another product, nothing floats),
-  `full_base` (whole footprint supported) or `geometric` (free 3D rotation, no support rule).
+- Support: `stable` (default: every product sits on the floor or has its centre over its contacts),
+  `contact` (any overlap, nothing floats; for packing with fillers), `full_base` (whole footprint
+  supported) or `geometric` (free 3D rotation, no support rule).
 - Objective: fewest unpacked products, then lowest box cost, fewest boxes, smallest box volume.
 
 Useful options via `set_options(...)`: `time_limit_ms` (default 1000), `improve=True` (keep searching

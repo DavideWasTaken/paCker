@@ -14,8 +14,8 @@ exactly where every product goes.
 - **Fast.** A typical order packs in a few milliseconds. A single-threaded C11 engine with no dependencies.
 - **Packs tight.** Multi-start search, local moves across boxes and ruin-and-recreate inside each box.
   It can prove when a layout uses the minimum number of boxes.
-- **Physically sensible.** Nothing floats: every product rests on the floor or on another product.
-  You can require full base support instead.
+- **Stable by default.** Every product sits on the floor or has its centre over what it rests on,
+  so nothing tips over. You can ask for full base support, or allow overhangs when you use fillers.
 - **Real-world constraints.** Box stock, weight limits, box cost, per-product rotation rules, diagonal
   placement and spacing.
 - **Use it from anything.** A C library, a JSON CLI, PHP and Python facades, an MCP server for AI agents
@@ -89,7 +89,7 @@ compiler; [docs/publishing.md](docs/publishing.md) explains how to build them.
 |---|---|
 | `rotation` | `none`, `flat` (keep height, the default) or `any` (any face down) |
 | `diagonal` | Also try non-right horizontal angles; `true` by default |
-| `support_mode` | `contact` (default: nothing floats), `full_base`, or `geometric` (free 3D tilt with `rotation: "free3d"`) |
+| `support_mode` | `stable` (default: centre over the contacts), `contact` (any overlap, for packing with fillers), `full_base`, or `geometric` (free 3D tilt with `rotation: "free3d"`) |
 | `max_weight`, `quantity`, `cost` | Box weight limit, stock (`-1` unlimited) and cost |
 | `time_limit_ms` | Search budget, 1000 ms by default |
 | `improve` | `true` keeps improving until the budget runs out or the layout is proven optimal |

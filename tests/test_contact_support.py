@@ -1,11 +1,11 @@
-"""Independent validator: contact (default) versus full-base support."""
+"""Independent validator: stable (default), contact and full-base support."""
 import sys
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'python'))
-from packer_adapter.ordinary_geometry import rests  # noqa: E402
+from packer_adapter.ordinary_geometry import rests, stable  # noqa: E402
 from packer_adapter.validation_ordinary import validate  # noqa: E402
 
 
@@ -28,15 +28,24 @@ def result(top_x, top_z=10):
 
 class ContactTests(unittest.TestCase):
     def test_overhang_is_contact_but_not_full_base(self):
-        self.assertEqual(validate(request(), result(25)), [])
         self.assertEqual(validate(request('contact'), result(25)), [])
         self.assertEqual(validate(request('full_base'), result(25)), ['unsupported footprint'])
         self.assertEqual(validate(request('contact'), result(25), require_support=True), ['unsupported footprint'])
 
     def test_floating_and_edge_contact_are_rejected(self):
-        self.assertEqual(validate(request(), result(25, 11)), ['product rests on nothing'])
-        self.assertEqual(validate(request(), result(30)), ['product rests on nothing'])
+        self.assertEqual(validate(request('contact'), result(25, 11)), ['product rests on nothing'])
+        self.assertEqual(validate(request('contact'), result(30)), ['product rests on nothing'])
         self.assertEqual(validate(request(), result(30), require_support=False), [])
+
+    def test_stable_is_the_default_and_rejects_tipping(self):
+        self.assertEqual(validate(request(), result(25)), ['product would tip'])
+        self.assertEqual(validate(request('stable'), result(15)), [])
+        self.assertEqual(validate(request(), result(25, 11)), ['product rests on nothing'])
+        columns = [dict(x=5, y=10, z=0, width=10, length=20, height=10, angle=0),
+                   dict(x=25, y=10, z=0, width=10, length=20, height=10, angle=0)]
+        bridge = dict(x=15, y=10, z=10, width=30, length=20, height=5, angle=0)
+        self.assertTrue(stable(bridge, columns))
+        self.assertFalse(stable(dict(bridge, x=33, width=24), columns))
 
     def test_rotated_overlap_counts(self):
         base = dict(x=10, y=10, z=0, width=20, length=20, height=10, angle=0)

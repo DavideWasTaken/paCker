@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(paCker VERSION 0.4.1 LANGUAGES C)
+project(paCker VERSION 0.5.0 LANGUAGES C)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(PACKER_OUTPUT_DIRECTORY "" CACHE PATH "Flat artifact directory for build scripts")

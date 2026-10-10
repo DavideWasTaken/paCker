@@ -138,14 +138,28 @@ int main(void) {
         top=base;top.z=10;top.angle=45;top.x=32;assert(op_rests(&top,&base,1));
         OpPlacement floor_item=base;assert(op_rests(&floor_item,NULL,0));
     }
-    reset();assert(r.options.support==OP_SUPPORT_CONTACT&&!r.options.improve);
-    r.options.support=2;assert(op_pack(&r,&out,NULL,0)==1);
+    /* Stable: the footprint centre must lie over the convex hull of the
+       contacts; a bridge over two columns is stable, an overhang past its
+       centre is not, although both are contact-supported. */
+    {
+        OpPlacement base={0,0,10,10,0,20,20,10,0},top=base;top.z=10;
+        top.x=25;assert(op_rests(&top,&base,1)&&!op_stable(&top,&base,1));
+        top.x=15;assert(op_stable(&top,&base,1));
+        top.x=20;assert(!op_stable(&top,&base,1));
+        OpPlacement columns[2]={{0,0,5,10,0,10,20,10,0},{1,0,25,10,0,10,20,10,0}};
+        OpPlacement bridge={2,0,15,10,10,30,20,5,0};
+        assert(op_stable(&bridge,columns,2)&&!op_supported(&bridge,columns,2));
+        bridge.x=33;bridge.width=24;assert(!op_stable(&bridge,columns,2));
+        OpPlacement floor_item=base;assert(op_stable(&floor_item,NULL,0));
+    }
+    reset();assert(r.options.support==OP_SUPPORT_STABLE&&!r.options.improve);
+    r.options.support=3;assert(op_pack(&r,&out,NULL,0)==1);
     /* Lower bound and improvement: four half-box cubes need two boxes. */
     reset();r.boxes[0]=(OpBox){"cube",10,10,10,1000,1,-1};r.item_count=4;
     for(int k=0;k<4;k++)r.items[k]=(OpItem){"half",10,10,6,1,k,OP_NONE,0};
     r.options.improve=1;r.options.time_limit_ms=5000;pack();
     assert(out.bin_count==4&&out.lower_bound==4&&out.proven_optimal&&out.elapsed_ms<5000);
     reset();r.options.improve=2;assert(op_pack(&r,&out,NULL,0)==1);
-    puts("core: geometry, diagonal, rotation, support, contact, bounds, improve, stock, weight, empty, budgets, incumbent, orientation selection and invalid inputs passed");
+    puts("core: geometry, diagonal, rotation, support, contact, stable, bounds, improve, stock, weight, empty, budgets, incumbent, orientation selection and invalid inputs passed");
     return 0;
 }

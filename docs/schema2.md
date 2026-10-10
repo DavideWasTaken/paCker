@@ -8,7 +8,7 @@ depth 16, 64 box types, 256 expanded items and 63 UTF-8 bytes per ID.
 Duplicate JSON members and duplicate type IDs are errors.
 
 Set `options.support_mode` to `"geometric"` to obtain schema 2. Omitting it, or
-using `"contact"` (the default) or `"full_base"`, selects ordinary packing and schema 1.
+using `"stable"` (the default), `"contact"` or `"full_base"`, selects ordinary packing and schema 1.
 Without `free3d` products and with zero clearance, geometric mode starts from the
 ordinary engine's layout (converted to schema 2 and rechecked with the geometric
 predicates) and spends the rest of its budget trying to improve it.

@@ -199,3 +199,58 @@ def rests(p, placed):
             if polygon_area(clip_polygon(vertices(q, origin), footprint)) > minimum:
                 return True
         return False
+
+
+def _hull(points):
+    points = sorted(set(points))
+    if len(points) < 3:
+        return points
+
+    def turn(o, a, b):
+        return (a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0])
+
+    lower, upper = [], []
+    for p in points:
+        while len(lower) >= 2 and turn(lower[-2], lower[-1], p) <= 0:
+            lower.pop()
+        lower.append(p)
+    for p in reversed(points):
+        while len(upper) >= 2 and turn(upper[-2], upper[-1], p) <= 0:
+            upper.pop()
+        upper.append(p)
+    return lower[:-1]+upper[:-1]
+
+
+def stable(p, placed):
+    """Floor, or the footprint centre lies inside the convex hull of the positive-area
+    contacts with coplanar top faces (a uniform rigid product does not tip).
+
+    Contacts are clipped in the product's own physical frame; the centre may sit up
+    to epsilon outside the hull to absorb serialization rounding.
+    """
+    with localcontext() as context:
+        context.prec = PRECISION
+        e = epsilon(p)
+        if abs(decimal(p['z'])) < e:
+            return True
+        c, s = axes(p['angle'])
+        half_w, half_l = decimal(p['width'])/2, decimal(p['length'])/2
+        boundary = [(-half_w, -half_l), (half_w, -half_l), (half_w, half_l), (-half_w, half_l)]
+        minimum = e*(decimal(p['width'])+decimal(p['length']))
+        origin = decimal(p['x']), decimal(p['y'])
+        points = []
+        for q in placed:
+            if q is p or abs(decimal(q['z'])+decimal(q['height'])-decimal(p['z'])) > e:
+                continue
+            local = [(x*c+y*s, -x*s+y*c) for x, y in vertices(q, origin)]
+            face = clip_polygon(local, boundary)
+            if polygon_area(face) > minimum:
+                points.extend(face)
+        hull = _hull(points)
+        if len(hull) < 3:
+            return False
+        for (ax, ay), (bx, by) in zip(hull, hull[1:]+hull[:1]):
+            length = ((bx-ax)**2+(by-ay)**2).sqrt()
+            if (bx-ax)*(-ay)-(by-ay)*(-ax) < -e*length:
+                return False
+        return True

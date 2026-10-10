@@ -6,5 +6,5 @@
 """
 from packer_adapter.client import Packer, PackerError, default_binary
 
-__version__ = '0.4.1'
+__version__ = '0.5.0'
 __all__ = ['Packer', 'PackerError', 'default_binary', '__version__']

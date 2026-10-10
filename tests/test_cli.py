@@ -36,7 +36,7 @@ class CliTests(unittest.TestCase):
 
     def test_diagonal_result_contract(self):
         result = self.run_json(REQUEST)
-        self.assertEqual(result['version'], '0.4.1')
+        self.assertEqual(result['version'], '0.5.0')
         self.assertEqual(result['status'], 'complete')
         self.assertEqual(result['unpacked'], [])
         self.assertEqual(len(result['bins']), 1)

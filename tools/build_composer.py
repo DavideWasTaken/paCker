@@ -13,11 +13,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_wheels import ROOT, linux_static  # noqa: E402
 
-VERSION = '0.4.1'
+VERSION = '0.5.0'
 NAME = 'davidewastaken/packer'
 README = """# paCker for PHP
 
-Fast 3D cuboid packing: boxes, products, stock, weight limits, rotations and contact
+Fast 3D cuboid packing: boxes, products, stock, weight limits, rotations and stable
 support. The native C engine is bundled for Windows x64 and Linux x64; no PHP extension,
 FFI or compiler is needed. PHP 8.1+ with `ext-json` and `proc_open`.
 
@@ -35,7 +35,7 @@ $packer->setOptions(['time_limit_ms' => 1000]);
 $result = $packer->pack();   // bins with positions, unpacked products, stats
 ```
 
-Options include `support_mode` (`contact` by default, `full_base`, `geometric`), `improve` (keep
+Options include `support_mode` (`stable` by default, `contact`, `full_base`, `geometric`), `improve` (keep
 searching until the time limit) and `gap`. On other platforms pass your own build:
 `new \\paCker\\Packer('/path/to/packer')` or set `PACKER_BINARY`.
 
@@ -61,7 +61,7 @@ def main():
     (output / '.gitattributes').write_text('bin/* binary\n', encoding='utf-8')
     composer = {
         'name': NAME,
-        'description': 'Fast 3D cuboid packing with a bundled native engine: boxes, stock, weight, rotations, contact support',
+        'description': 'Fast 3D cuboid packing with a bundled native engine: boxes, stock, weight, rotations, stable support',
         'type': 'library', 'license': 'MIT',
         'keywords': ['bin packing', 'box packing', '3d packing', 'shipping', 'cuboid'],
         'require': {'php': '>=8.1', 'ext-json': '*'},

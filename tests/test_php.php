@@ -97,14 +97,14 @@ try {
     $empty = (new Packer($binary))->pack();
     file_put_contents($response, json_encode($empty, JSON_THROW_ON_ERROR));
     check((new Packer(PHP_BINARY))->pack() === $empty, 'Controlled child should emit a valid empty result');
-    foreach (['0.1.0', '0.2.0', '0.3.0', '0.3.1', '0.3.2', '0.3.3', '0.4.0', '0.4.1'] as $version) {
+    foreach (['0.1.0', '0.2.0', '0.3.0', '0.3.1', '0.3.2', '0.3.3', '0.4.0', '0.4.1', '0.5.0'] as $version) {
         $compatible = $empty;
         $compatible['version'] = $version;
         file_put_contents($response, json_encode($compatible, JSON_THROW_ON_ERROR));
         check((new Packer(PHP_BINARY))->pack() === $compatible, 'Supported protocol versions must remain valid');
     }
     $badResults = [];
-    $invalid = $empty; $invalid['version'] = '0.5.0'; $badResults[] = $invalid;
+    $invalid = $empty; $invalid['version'] = '9.9.9'; $badResults[] = $invalid;
     foreach (['elapsed_ms' => -1, 'candidates' => -1, 'restarts' => 0.5, 'total_cost' => -1, 'utilization' => 999] as $field => $bad) {
         $invalid = $empty; $invalid['stats'][$field] = $bad; $badResults[] = $invalid;
     }

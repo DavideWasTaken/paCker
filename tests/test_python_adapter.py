@@ -32,7 +32,7 @@ class RequestTests(unittest.TestCase):
         result = subprocess.run([str(BINARY), '--capabilities'], capture_output=True, check=True)
         caps = json.loads(result.stdout)
         self.assertEqual([1, 2], caps['schemas'])
-        self.assertEqual(['contact', 'full_base', 'geometric'], caps['support_modes'])
+        self.assertEqual(['contact', 'full_base', 'geometric', 'stable'], caps['support_modes'])
         self.assertEqual(256, caps['limits']['expanded_items'])
 
     def test_rejects_missing_unknown_nonfinite_and_cross_field_values(self):

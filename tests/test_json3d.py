@@ -33,7 +33,7 @@ class Schema2Tests(unittest.TestCase):
 
     def test_rod_and_effective_options(self):
         result = self.solve(REQUEST)
-        self.assertEqual(result['version'], '0.4.1-free3d-dev')
+        self.assertEqual(result['version'], '0.5.0-free3d-dev')
         self.assertEqual(result['schema_version'], 2)
         self.assertEqual(result['status'], 'complete')
         self.assertEqual(result['clearance'], 0)
@@ -45,20 +45,20 @@ class Schema2Tests(unittest.TestCase):
         self.assertFalse(set(item) & {'x', 'y', 'z', 'angle'})
         self.assertEqual(item['width'], 150)
 
-    def test_ordinary_omitted_and_explicit_contact(self):
+    def test_ordinary_omitted_and_explicit_stable(self):
         request = copy.deepcopy(REQUEST)
         request['items'][0]['rotation'] = 'any'
         request['options'].pop('support_mode')
         a = self.call(request)[1]
-        request['options']['support_mode'] = 'contact'
+        request['options']['support_mode'] = 'stable'
         b = self.call(request)[1]
         a['stats'].pop('elapsed_ms'); b['stats'].pop('elapsed_ms')
         self.assertEqual(a, b)
-        self.assertEqual(a['support_mode'], 'contact')
+        self.assertEqual(a['support_mode'], 'stable')
         request['options']['support_mode'] = 'full_base'
         self.assertEqual(self.call(request)[1]['support_mode'], 'full_base')
         self.assertNotIn('schema_version', a)
-        self.assertEqual(a['version'], '0.4.1')
+        self.assertEqual(a['version'], '0.5.0')
 
     def test_forbidden_options_and_strict_fields(self):
         mutations = [lambda r: r['options'].update(support_mode='full_base'),

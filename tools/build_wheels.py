@@ -44,7 +44,7 @@ def wheel(binary, name, platform, output):
 
 
 def main():
-    output = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'release/0.4.1/python'
+    output = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'release/0.5.0/python'
     output.mkdir(parents=True, exist_ok=True)
     windows = ROOT / 'build/packer.exe'
     if not windows.exists():

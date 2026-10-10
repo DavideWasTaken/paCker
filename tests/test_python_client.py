@@ -17,7 +17,7 @@ class ClientTests(unittest.TestCase):
         packer.set_options(time_limit_ms=500).set_options(improve=True)
         result = packer.pack()
         self.assertEqual(result['status'], 'complete')
-        self.assertEqual(result['support_mode'], 'contact')
+        self.assertEqual(result['support_mode'], 'stable')
         self.assertTrue(result['stats']['proven_optimal'])
         self.assertEqual(validation_ordinary.validate(packer.request(), result), [])
 

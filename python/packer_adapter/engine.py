@@ -110,11 +110,11 @@ class Engine:
                 caps = decode_object(await run_process([self.binary, '--capabilities'], b'', timeout=5,
                                                        stdout_limit=65536))
                 if (caps.get('protocol') != 1 or caps.get('schemas') != [1, 2] or
-                        caps.get('support_modes') != ['contact', 'full_base', 'geometric'] or
+                        caps.get('support_modes') != ['contact', 'full_base', 'geometric', 'stable'] or
                         caps.get('limits') != {'request_bytes': REQUEST_BYTES, 'json_depth': 16,
                             'expanded_items': 256, 'box_types': 64, 'id_utf8_bytes': 63} or
                         not isinstance(caps.get('ordinary_version'), str) or
-                        caps.get('geometric_version') != '0.4.1-free3d-dev'):
+                        caps.get('geometric_version') != '0.5.0-free3d-dev'):
                     raise AdapterError('incompatible_engine', 'Capability handshake does not match supported CLI contract.')
             except AdapterError as exc:
                 raise AdapterError('incompatible_engine', f'Configured binary lacks compatible --capabilities: {exc}') from exc
