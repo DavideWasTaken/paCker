@@ -3,3 +3,6 @@
 *.whl binary
 third_party/cJSON.* -text
 viewer/vendor/*.js -text
+
+# Keep tests out of the GitHub language statistics: the engine is C.
+tests/** linguist-detectable=false
