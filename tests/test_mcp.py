@@ -21,7 +21,7 @@ from test_render import png_dimensions
 
 
 @unittest.skipUnless(all(importlib.util.find_spec(name) is not None for name in ('mcp', 'playwright', 'jsonschema')),
-                     'Install packer-adapter[mcp,images] for MCP integration tests')
+                     'Install packer3d[mcp,images] for MCP integration tests')
 class MCPTests(unittest.IsolatedAsyncioTestCase):
     def setUp(self):
         self.assertIsNotNone(importlib.util.find_spec('packer_adapter.mcp_server'), 'MCP tools are not implemented')

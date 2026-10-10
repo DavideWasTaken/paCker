@@ -15,6 +15,8 @@ from mcp.server.mcpserver.utilities.func_metadata import ArgModelBase, FuncMetad
 from mcp.types import CallToolResult, ImageContent, TextContent, ToolAnnotations
 from pydantic import ConfigDict
 
+from packer3d import __version__
+
 from .engine import Engine, Validator
 from .models import (AdapterError, Capabilities, Envelope, REQUEST_SCHEMA, RESULT_SCHEMA,
                      check_request, check_result, selected_boxes)
@@ -61,7 +63,7 @@ class Adapter:
                       'width': 1024, 'height': 768, 'max_images': MAX_IMAGES,
                       'max_png_bytes': MAX_INLINE_BYTES,
                       'availability_note': 'Installed Chromium detected; a render call verifies launch.'},
-            adapter={'version': '0.1.0', 'transport': 'stdio', 'stateless': True,
+            adapter={'version': __version__, 'transport': 'stdio', 'stateless': True,
                      'result_bytes': 4*1024*1024, 'engine_timeout_seconds': self.engine.timeout,
                      'validation_timeout_seconds': self.validator.timeout,
                      'geometric_conventions': {'axes': 'right-handed X=width,Y=length,Z=height',
@@ -198,7 +200,7 @@ def create_server(binary):
             fn_metadata=FuncMetadata(arg_model=argument_model, output_model=output_model), is_async=True,
             annotations=ToolAnnotations(read_only_hint=True, destructive_hint=False, idempotent_hint=False,
                                         open_world_hint=False)))
-    return MCPServer('paCker', version='0.1.0', tools=tools, lifespan=lifespan,
+    return MCPServer('paCker', version=__version__, tools=tools, lifespan=lifespan,
                      instructions='Supply actual product and box dimensions. Geometric mode assumes padding supplied by the user.')
 
 

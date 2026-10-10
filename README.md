@@ -125,8 +125,13 @@ Then open <http://127.0.0.1:8765> to pack orders and inspect every box in 3D: or
 placements, use the exploded view, or export a PNG. **Hide panel** gives the layout the full width, and
 <http://127.0.0.1:8765/?view> opens straight into it, handy for looking at an imported result.
 
-For agents, the local [MCP server](docs/mcp.md) offers four tools: `get_capabilities`, `pack_order`,
-`validate_packing` and `render_packing`. Results can include rendered images.
+For AI agents there is a local [MCP server](docs/mcp.md) with four tools: `pack_order`,
+`validate_packing`, `render_packing` and `get_capabilities`. Results can include rendered images.
+
+```sh
+pip install "packer3d[mcp]"
+claude mcp add packer -- packer-mcp     # or add {"command": "packer-mcp"} to your client's mcpServers
+```
 
 ## Tests
 
