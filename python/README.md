@@ -32,8 +32,9 @@ print('not packed:', result['unpacked'])
   supported) or `geometric` (free 3D rotation, no support rule).
 - Objective: fewest unpacked products, then lowest box cost, fewest boxes, smallest box volume.
 
-Useful options via `set_options(...)`: `time_limit_ms` (default 1000), `improve=True` (keep searching
-until the time limit or a proven optimum), `support_mode`, `gap`. Results report `lower_bound` and
+Useful options via `set_options(...)`: `max_candidates` (placements tried, default 200,000; lower it for
+faster large orders), `time_limit_ms` (time cap, default 1000), `improve=True` (keep searching until
+the budget or a proven optimum), `support_mode`, `gap`. Results report `lower_bound` and
 `proven_optimal`. Errors raise `PackerError`.
 
 On other platforms, build the CLI from the source repository and set `PACKER_BINARY`, or pass

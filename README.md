@@ -103,8 +103,9 @@ From a source checkout, `require 'php/src/Packer.php'` and `python/` on `sys.pat
 | `diagonal` | Also try non-right horizontal angles; `true` by default |
 | `support_mode` | `stable` (default: centre over the contacts), `contact` (any overlap, for packing with fillers), `full_base`, or `geometric` (free 3D tilt with `rotation: "free3d"`) |
 | `max_weight`, `quantity`, `cost` | Box weight limit, stock (`-1` unlimited) and cost |
-| `time_limit_ms` | Search budget, 1000 ms by default |
-| `improve` | `true` keeps improving until the budget runs out or the layout is proven optimal |
+| `max_candidates` | Placements tried at most, 200,000 by default. Lower it (say 50,000) for faster large orders, at a small risk of slightly larger boxes |
+| `time_limit_ms` | Time cap, 1000 ms by default; a safety net that the default placement budget rarely reaches |
+| `improve` | `true` keeps improving until `max_candidates` or `time_limit_ms` runs out, or the layout is proven optimal; raise both for longer searches |
 | `gap` | Horizontal clearance between products and walls |
 
 The objective, in order of priority: fewest unpacked products, lowest box cost, fewest boxes, then
