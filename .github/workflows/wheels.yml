@@ -1,0 +1,64 @@
+name: Wheels
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish the wheels to PyPI
+        type: boolean
+        default: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Zig 0.15.2
+        run: |
+          curl -sSLo zig.tar.xz https://ziglang.org/download/0.15.2/zig-x86_64-linux-0.15.2.tar.xz
+          echo "02aa270f183da276e5b5920b1dac44a63f1a49e55050ebde3aecc9eb82f93239  zig.tar.xz" | sha256sum -c -
+          tar -xf zig.tar.xz
+          echo "$PWD/zig-x86_64-linux-0.15.2" >> "$GITHUB_PATH"
+      - name: Native build and tests
+        run: sh build.sh
+      - name: Python tests
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests
+      - name: Build wheels
+        run: |
+          python -m pip install "setuptools>=77" wheel
+          python tools/build_wheels.py dist
+      - name: Smoke test the Linux wheel outside the checkout
+        run: |
+          python -m venv /tmp/wheel
+          /tmp/wheel/bin/pip install dist/*manylinux*.whl
+          cd /tmp && /tmp/wheel/bin/python -I -c "
+          from packer3d import Packer
+          r = Packer().add_box(id='b', width=100, length=60, height=40).add_item(id='a', width=50, length=30, height=20, quantity=5, rotation='any').pack()
+          assert r['status'] == 'complete', r
+          print(r['version'], r['support_mode'], len(r['bins']))"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheels
+          path: dist/*.whl
+
+  publish:
+    if: github.event_name == 'workflow_dispatch' && inputs.publish
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: wheels
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@release/v1

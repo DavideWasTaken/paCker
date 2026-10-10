@@ -1,8 +1,9 @@
 """Build the packer3d wheels with the native CLI bundled, one per platform.
 
-Windows x64 uses build/packer.exe from build.ps1. Linux x64 is cross-compiled
-here with the project's Zig as a static musl executable, so one wheel runs on
-any x86-64 Linux distribution. Usage: python tools/build_wheels.py [output_dir]
+Windows x64 uses build/packer.exe from build.ps1 when present, otherwise it is
+cross-compiled. Linux x64 is cross-compiled with Zig as a static musl executable,
+so one wheel runs on any x86-64 Linux distribution. Works on Windows and Linux.
+Usage: python tools/build_wheels.py [output_dir]
 """
 import os
 import shutil
@@ -18,13 +19,21 @@ SOURCES = ['src/cli.c', 'src/json3d.c', 'src/oblique.c', 'src/geometry3d.c', 'sr
 BIN = ROOT / 'python/packer3d/bin'
 
 
+def cross(target_triple, output, *flags):
+    output.parent.mkdir(parents=True, exist_ok=True)
+    zig = str(ZIG) if ZIG.exists() else (shutil.which('zig') or 'zig')
+    subprocess.run([zig, 'cc', '-target', target_triple, '-std=c11', '-O2', '-Wall', '-Wextra', '-Werror',
+                    '-Iinclude', '-Ithird_party', *flags, *SOURCES, '-o', str(output)], cwd=ROOT, check=True)
+    return output
+
+
 def linux_static():
-    target = ROOT / 'build/linux-static/packer'
-    target.parent.mkdir(parents=True, exist_ok=True)
-    zig = str(ZIG) if ZIG.exists() else 'zig'
-    subprocess.run([zig, 'cc', '-target', 'x86_64-linux-musl', '-std=c11', '-O2', '-Wall', '-Wextra', '-Werror',
-                    '-Iinclude', '-Ithird_party', '-static', '-s', *SOURCES, '-o', str(target)], cwd=ROOT, check=True)
-    return target
+    return cross('x86_64-linux-musl', ROOT / 'build/linux-static/packer', '-static', '-s')
+
+
+def windows_binary():
+    built = ROOT / 'build/packer.exe'
+    return built if built.exists() else cross('x86_64-windows-gnu', ROOT / 'build/windows-cross/packer.exe', '-s')
 
 
 def wheel(binary, name, platform, output):
@@ -44,12 +53,9 @@ def wheel(binary, name, platform, output):
 
 
 def main():
-    output = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'release/0.5.0/python'
+    output = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT / 'release/0.5.0/python'
     output.mkdir(parents=True, exist_ok=True)
-    windows = ROOT / 'build/packer.exe'
-    if not windows.exists():
-        raise SystemExit('Run ./build.ps1 first: build/packer.exe is missing')
-    wheel(windows, 'packer.exe', 'win_amd64', output)
+    wheel(windows_binary(), 'packer.exe', 'win_amd64', output)
     wheel(linux_static(), 'packer', 'manylinux2014_x86_64.musllinux_1_1_x86_64', output)
     for path in sorted(output.glob('packer3d-*.whl')):
         executable_bit(path)

@@ -1,8 +1,9 @@
 """Stage the standalone Composer package with bundled Windows and Linux x64 executables.
 
 The output directory is a ready Git repository for Packagist: commit it to a public
-GitHub repository and tag the version. Run ./build.ps1 first; the Linux executable
-is the static build from tools/build_wheels.py. Usage: python tools/build_composer.py [dir]
+GitHub repository and tag the version. Executables come from tools/build_wheels.py:
+build/packer.exe when present (else a Zig cross build) and a static Linux build.
+Usage: python tools/build_composer.py [dir]
 """
 import json
 import shutil
@@ -11,7 +12,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from build_wheels import ROOT, linux_static  # noqa: E402
+from build_wheels import ROOT, linux_static, windows_binary  # noqa: E402
 
 VERSION = '0.5.0'
 NAME = 'davidewastaken/packer'
@@ -45,9 +46,7 @@ Engine {version}. MIT licensed; the bundled engine includes cJSON (MIT, see LICE
 
 def main():
     output = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / f'release/{VERSION}/composer'
-    windows = ROOT / 'build/packer.exe'
-    if not windows.exists():
-        raise SystemExit('Run ./build.ps1 first: build/packer.exe is missing')
+    windows = windows_binary()
     if output.exists():
         shutil.rmtree(output)
     (output / 'src').mkdir(parents=True)

@@ -1,41 +1,49 @@
 # Publishing packer3d (PyPI) and davidewastaken/packer (Composer)
 
-Both packages bundle the native CLI, so users need no compiler. Build them on Windows from a clean
-checkout; nothing here publishes anything by itself.
+Both packages bundle the native CLI for Windows x64 and Linux x64 (a static musl build that runs on any
+x86-64 distribution), so users need no compiler.
 
-## Build
+## PyPI: `pip install packer3d`
 
-```powershell
-./build.ps1                          # build/packer.exe and native tests
-python tools/build_wheels.py         # release/0.5.0/python/*.whl (Windows x64, static Linux x64)
-python tools/build_composer.py       # release/0.5.0/composer: a ready Git repository tagged v0.5.0
+The [Wheels workflow](../.github/workflows/wheels.yml) builds and tests both wheels on every push. Publishing
+uses PyPI Trusted Publishing, so no token is stored anywhere.
+
+One-time setup on pypi.org (Account → Publishing → Add a new pending publisher):
+
+| Field | Value |
+|---|---|
+| PyPI project name | `packer3d` |
+| Owner | `DavideWasTaken` |
+| Repository name | `paCker` |
+| Workflow name | `wheels.yml` |
+| Environment name | `pypi` |
+
+Then publish: GitHub → Actions → Wheels → Run workflow, with *Publish the wheels to PyPI* checked
+(or `gh workflow run wheels.yml -f publish=true`). Bump the version first: PyPI never accepts the same
+version twice.
+
+Each GitHub release also carries the wheels, installable directly with
+`pip install https://github.com/DavideWasTaken/paCker/releases/download/v<version>/<wheel file>`.
+
+## Packagist: `composer require davidewastaken/packer`
+
+The Composer package lives in its own repository,
+[DavideWasTaken/paCker-php](https://github.com/DavideWasTaken/paCker-php), because it ships prebuilt
+executables. One-time setup: on packagist.org, Submit → `https://github.com/DavideWasTaken/paCker-php`,
+then enable the GitHub hook so new tags appear automatically.
+
+New version: `python tools/build_composer.py` stages `release/<version>/composer`; copy its files into
+the package repository, commit, tag `v<version>` and push the tag.
+
+## Local builds
+
+```sh
+python tools/build_wheels.py dist        # both wheels, on Windows or Linux with Zig on PATH
+python tools/build_composer.py           # release/<version>/composer, a Git repository tagged v<version>
 ```
 
-The Linux executable is cross-compiled with the project's Zig as a static musl binary, tagged
-`manylinux2014_x86_64.musllinux_1_1_x86_64`. Both wheels and the Composer package were installed and
-run on Windows and on Ubuntu (WSL) before the first release.
+## Version bump
 
-## PyPI
-
-1. Create a PyPI account and an API token; optionally try TestPyPI first.
-2. `python -m pip install twine`
-3. `python -m twine upload release/0.5.0/python/*.whl`
-
-Only wheels are uploaded: a source distribution would need a C compiler at install time.
-
-## Packagist
-
-1. Create an empty public GitHub repository, for example `DavideWasTaken/packer-php`.
-2. From `release/0.5.0/composer`:
-   `git remote add origin https://github.com/DavideWasTaken/packer-php.git`, then
-   `git push -u origin main --tags`.
-3. On packagist.org, submit the repository URL and enable the GitHub hook for updates.
-
-Users then run `composer require davidewastaken/packer`. The package name comes from its
-`composer.json`; change it in `tools/build_composer.py` before the first push if needed.
-
-## Next versions
-
-Bump `OP_VERSION`/`OP3_VERSION`, `CMakeLists.txt`, `python/pyproject.toml`, `packer3d.__version__`
-and `VERSION` in `tools/build_composer.py`, rebuild, then repeat the steps above. For Composer, copy
-the new staged files into your existing package repository and tag the new version there.
+Update `OP_VERSION`/`OP3_VERSION`, `CMakeLists.txt`, `python/pyproject.toml`, `packer3d.__version__`,
+`VERSION` in `tools/build_composer.py`, the schema 2 version constant, and the version lists in the PHP
+facade and tests.
