@@ -7,8 +7,8 @@ checkout; nothing here publishes anything by itself.
 
 ```powershell
 ./build.ps1                          # build/packer.exe and native tests
-python tools/build_wheels.py         # release/0.4.1/python/*.whl (Windows x64, static Linux x64)
-python tools/build_composer.py       # release/0.4.1/composer: a ready Git repository tagged v0.4.1
+python tools/build_wheels.py         # release/0.5.0/python/*.whl (Windows x64, static Linux x64)
+python tools/build_composer.py       # release/0.5.0/composer: a ready Git repository tagged v0.5.0
 ```
 
 The Linux executable is cross-compiled with the project's Zig as a static musl binary, tagged
@@ -19,14 +19,14 @@ run on Windows and on Ubuntu (WSL) before the first release.
 
 1. Create a PyPI account and an API token; optionally try TestPyPI first.
 2. `python -m pip install twine`
-3. `python -m twine upload release/0.4.1/python/*.whl`
+3. `python -m twine upload release/0.5.0/python/*.whl`
 
 Only wheels are uploaded: a source distribution would need a C compiler at install time.
 
 ## Packagist
 
 1. Create an empty public GitHub repository, for example `DavideWasTaken/packer-php`.
-2. From `release/0.4.1/composer`:
+2. From `release/0.5.0/composer`:
    `git remote add origin https://github.com/DavideWasTaken/packer-php.git`, then
    `git push -u origin main --tags`.
 3. On packagist.org, submit the repository URL and enable the GitHub hook for updates.

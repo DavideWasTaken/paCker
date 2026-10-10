@@ -99,8 +99,8 @@ The objective, in order of priority: fewest unpacked products, lowest box cost, 
 smallest total box volume. Each result reports a `lower_bound` on the box count, and `proven_optimal`
 when the layout reaches it.
 
-Limits: 64 box types and 256 products per request. Products are treated as rigid cuboids; the engine
-does not model load bearing or fragility. See [schema 2](docs/schema2.md) for the geometric output and
+Limits: 64 box types and 256 products per request. Products are treated as rigid cuboids with their
+weight at the centre; the engine does not model load bearing or fragility. See [schema 2](docs/schema2.md) for the geometric output and
 the [geometric C API](docs/free3d-c-api.md) for free 3D rotation.
 
 ## Viewer and AI agents
@@ -110,7 +110,8 @@ python serve.py
 ```
 
 Then open <http://127.0.0.1:8765> to pack orders and inspect every box in 3D: orbit, step through the
-placements, use the exploded view, or export a PNG.
+placements, use the exploded view, or export a PNG. **Hide panel** gives the layout the full width, and
+<http://127.0.0.1:8765/?view> opens straight into it, handy for looking at an imported result.
 
 For agents, the local [MCP server](docs/mcp.md) offers four tools: `get_capabilities`, `pack_order`,
 `validate_packing` and `render_packing`. Results can include rendered images.
