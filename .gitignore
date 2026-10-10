@@ -1,0 +1,13 @@
+build/
+release/
+.tools/
+.cache/
+__pycache__/
+*.egg-info/
+python/dist/
+python/build/
+python/packer3d/bin/
+python/packer_adapter/assets/
+*.obj
+*.pdb
+*.ilk

@@ -1,0 +1,369 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "0.4.1-free3d-dev"
+    },
+    "schema_version": {
+      "const": 2
+    },
+    "support_mode": {
+      "const": "geometric"
+    },
+    "clearance": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1000000.0
+    },
+    "status": {
+      "enum": [
+        "complete",
+        "partial"
+      ]
+    },
+    "bins": {
+      "type": "array",
+      "maxItems": 256,
+      "items": {
+        "$ref": "#/$defs/bin"
+      }
+    },
+    "unpacked": {
+      "type": "array",
+      "maxItems": 256,
+      "items": {
+        "$ref": "#/$defs/identity"
+      }
+    },
+    "stats": {
+      "$ref": "#/$defs/stats"
+    }
+  },
+  "required": [
+    "version",
+    "schema_version",
+    "support_mode",
+    "clearance",
+    "status",
+    "bins",
+    "unpacked",
+    "stats"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "complete"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "unpacked": {
+            "maxItems": 0
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "unpacked": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "paCker geometric result, development",
+  "description": "All numeric fields are finite binary64 values serialized with 17 significant digits. Geometry, rotation permissions, effective options, unique identities, quantities, stock, weights, and aggregate statistics must also be validated against the original request. Search is heuristic. Padding is supplied by the user; no support, gravity, friction, or insertion path is checked.",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 63,
+      "pattern": "^[^\\u0000]+$",
+      "description": "1..63 UTF-8 bytes, checked by CLI; maxLength alone counts Unicode characters."
+    },
+    "dimension": {
+      "type": "number",
+      "minimum": 0.0001,
+      "maximum": 1000000.0
+    },
+    "identity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "instance": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        }
+      },
+      "required": [
+        "id",
+        "instance"
+      ],
+      "additionalProperties": false
+    },
+    "placement": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "instance": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "width": {
+          "$ref": "#/$defs/dimension"
+        },
+        "length": {
+          "$ref": "#/$defs/dimension"
+        },
+        "height": {
+          "$ref": "#/$defs/dimension"
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000000000000.0
+        },
+        "center": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "number"
+          },
+          "description": "Right-handed center in container coordinates, X width, Y length, Z height."
+        },
+        "orientation": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "number"
+          },
+          "description": "Active local-to-container [x,y,z,w]. Squared norm error <=1e-12; first nonzero in w,x,y,z order positive. Interpreted as its mathematically normalized rotation."
+        }
+      },
+      "required": [
+        "id",
+        "instance",
+        "width",
+        "length",
+        "height",
+        "weight",
+        "center",
+        "orientation"
+      ],
+      "additionalProperties": false
+    },
+    "bin": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^bin-[1-9][0-9]*$"
+        },
+        "type_id": {
+          "$ref": "#/$defs/id"
+        },
+        "width": {
+          "$ref": "#/$defs/dimension"
+        },
+        "length": {
+          "$ref": "#/$defs/dimension"
+        },
+        "height": {
+          "$ref": "#/$defs/dimension"
+        },
+        "max_weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000000000000.0
+        },
+        "cost": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000000000000.0
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 256000000000000.0,
+          "description": "Aggregate of at most 256 item weights. The request-aware relative capacity allowance is checked separately; per-item weights and box capacity remain at most 1e12."
+        },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 256,
+          "items": {
+            "$ref": "#/$defs/placement"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "type_id",
+        "width",
+        "length",
+        "height",
+        "max_weight",
+        "cost",
+        "weight",
+        "items"
+      ],
+      "additionalProperties": false
+    },
+    "effectiveOptions": {
+      "type": "object",
+      "properties": {
+        "support_mode": {
+          "const": "geometric"
+        },
+        "clearance": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000000.0,
+          "default": 0
+        },
+        "gap": {
+          "type": "number",
+          "const": 0,
+          "default": 0
+        },
+        "angle_step": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 90,
+          "default": 15
+        },
+        "restarts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64,
+          "default": 8
+        },
+        "max_candidates": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000000,
+          "default": 200000
+        },
+        "time_limit_ms": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 60000,
+          "default": 1000
+        },
+        "seed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "default": 42
+        }
+      },
+      "required": [
+        "support_mode",
+        "clearance",
+        "gap",
+        "angle_step",
+        "restarts",
+        "max_candidates",
+        "time_limit_ms",
+        "seed"
+      ],
+      "additionalProperties": false
+    },
+    "stats": {
+      "type": "object",
+      "properties": {
+        "elapsed_ms": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1.7976931348623157e+308
+        },
+        "candidates": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000000
+        },
+        "restarts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64
+        },
+        "box_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 256
+        },
+        "total_cost": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 256000000000000.0
+        },
+        "utilization": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1.0000001
+        },
+        "timed_out": {
+          "type": "boolean"
+        },
+        "budget_exhausted": {
+          "type": "boolean"
+        },
+        "stop_reason": {
+          "enum": [
+            "completed",
+            "search_exhausted",
+            "time_limit",
+            "candidate_limit"
+          ]
+        },
+        "seed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "xy_candidates": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000000
+        },
+        "xy_elapsed_ms": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1.7976931348623157e+308
+        },
+        "options": {
+          "$ref": "#/$defs/effectiveOptions"
+        }
+      },
+      "required": [
+        "elapsed_ms",
+        "candidates",
+        "restarts",
+        "box_count",
+        "total_cost",
+        "utilization",
+        "timed_out",
+        "budget_exhausted",
+        "stop_reason",
+        "seed",
+        "xy_candidates",
+        "xy_elapsed_ms",
+        "options"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

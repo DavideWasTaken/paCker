@@ -1,0 +1,210 @@
+{
+  "type": "object",
+  "properties": {
+    "boxes": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "$ref": "#/$defs/box"
+      }
+    },
+    "items": {
+      "type": "array",
+      "maxItems": 256,
+      "items": {
+        "$ref": "#/$defs/item"
+      }
+    },
+    "options": {
+      "$ref": "#/$defs/options"
+    }
+  },
+  "required": [
+    "boxes",
+    "items",
+    "options"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "paCker geometric request (schema 2 result)",
+  "description": "Same request envelope as schema 1. Explicit geometric mode selects schema 2 output. Strict UTF-8 JSON, at most 1 MiB and depth 16. Type IDs are unique per category; expanded item quantities total at most 256. These cross-field and byte constraints are checked by the CLI.",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 63,
+      "pattern": "^[^\\u0000]+$",
+      "description": "1..63 UTF-8 bytes, checked by CLI; maxLength alone counts Unicode characters."
+    },
+    "dimension": {
+      "type": "number",
+      "minimum": 0.0001,
+      "maximum": 1000000.0
+    },
+    "box": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "width": {
+          "$ref": "#/$defs/dimension"
+        },
+        "length": {
+          "$ref": "#/$defs/dimension"
+        },
+        "height": {
+          "$ref": "#/$defs/dimension"
+        },
+        "max_weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000000000000.0,
+          "default": 1000000000000.0
+        },
+        "cost": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000000000000.0,
+          "default": 1
+        },
+        "quantity": {
+          "type": "integer",
+          "minimum": -1,
+          "maximum": 256,
+          "default": -1
+        }
+      },
+      "required": [
+        "id",
+        "width",
+        "length",
+        "height"
+      ],
+      "additionalProperties": false
+    },
+    "item": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "width": {
+          "$ref": "#/$defs/dimension"
+        },
+        "length": {
+          "$ref": "#/$defs/dimension"
+        },
+        "height": {
+          "$ref": "#/$defs/dimension"
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000000000000.0,
+          "default": 0
+        },
+        "quantity": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 256,
+          "default": 1
+        },
+        "rotation": {
+          "enum": [
+            "none",
+            "flat",
+            "any",
+            "free3d"
+          ],
+          "default": "flat"
+        },
+        "diagonal": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "required": [
+        "id",
+        "width",
+        "length",
+        "height"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "rotation": {
+                "const": "free3d"
+              }
+            },
+            "required": [
+              "rotation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "diagonal": {
+                "const": true
+              }
+            }
+          }
+        }
+      ]
+    },
+    "options": {
+      "type": "object",
+      "properties": {
+        "support_mode": {
+          "const": "geometric"
+        },
+        "clearance": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000000.0,
+          "default": 0
+        },
+        "gap": {
+          "type": "number",
+          "const": 0,
+          "default": 0
+        },
+        "angle_step": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 90,
+          "default": 15
+        },
+        "restarts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64,
+          "default": 8
+        },
+        "max_candidates": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000000,
+          "default": 200000
+        },
+        "time_limit_ms": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 60000,
+          "default": 1000
+        },
+        "seed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "default": 42
+        }
+      },
+      "required": [
+        "support_mode"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

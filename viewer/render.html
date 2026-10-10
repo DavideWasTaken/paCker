@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1024,height=768,initial-scale=1">
+  <title>paCker final packing image</title>
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+  <style>
+    html,body{margin:0;width:1024px;height:768px;overflow:hidden;background:#f3f7f6;color:#173b34;font:16px system-ui,sans-serif}
+    #scene{position:absolute;inset:0}
+    #caption{position:absolute;left:28px;top:24px;padding:12px 16px;background:#ffffffed;border:1px solid #b9c9c3;border-radius:8px;max-width:900px}
+    #caption strong{display:block;font-size:20px}
+    #caption span{font-size:13px;color:#49645c}
+  </style>
+</head>
+<body>
+  <div id="scene"></div><div id="caption"></div>
+  <script type="module">
+    import * as THREE from 'three';
+    import {buildPackingScene,disposePackingScene} from './packing-scene.js';
+    import {fitPackingCamera} from './camera.js';
+    const scene=new THREE.Scene();scene.background=new THREE.Color(0xf3f7f6);
+    scene.add(new THREE.HemisphereLight(0xffffff,0x7b8c98,2.5));
+    const light=new THREE.DirectionalLight(0xffffff,3);light.position.set(150,-250,450);scene.add(light);
+    const camera=new THREE.PerspectiveCamera(38,1024/768,.01,1e9);camera.up.set(0,0,1);
+    const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+    renderer.setPixelRatio(1);renderer.setSize(1024,768,false);renderer.outputColorSpace=THREE.SRGBColorSpace;
+    document.querySelector('#scene').appendChild(renderer.domElement);
+    let packing=null;
+    window.sceneReady=false;
+    window.renderScene=async ({result,boxIndex,view}) => {
+      window.sceneReady=false;
+      if (!['isometric','top'].includes(view) || !Number.isInteger(boxIndex) || boxIndex<0 || boxIndex>=result.bins.length)
+        throw Error('Invalid box or view');
+      if (packing){scene.remove(packing.root);disposePackingScene(packing);}
+      packing=buildPackingScene(THREE,result);
+      scene.add(packing.root);
+      packing.boxes.forEach(({group},i)=>group.visible=i===boxIndex);
+      const target=packing.boxes[boxIndex].group;
+      const bounds=new THREE.Box3().setFromObject(target);
+      fitPackingCamera(THREE,camera,bounds,view==='top' ? new THREE.Vector3(0,-.001,1) : new THREE.Vector3(.8,-1,.78),.78);
+      const bin=result.bins[boxIndex];
+      const caption=document.querySelector('#caption');caption.replaceChildren();
+      const title=document.createElement('strong');title.textContent=`Box ${boxIndex+1} · ${bin.type_id}`;
+      const detail=document.createElement('span');detail.textContent=`${bin.width} × ${bin.length} × ${bin.height} · ${bin.items.length} product${bin.items.length===1?'':'s'} · ${view==='top'?'Top':'Isometric'} view`;
+      caption.append(title,detail);
+      renderer.render(scene,camera);
+      await new Promise(resolve=>requestAnimationFrame(()=>{renderer.render(scene,camera);resolve();}));
+      window.sceneReady=true;
+      return {boxIndex,view,camera:camera.position.toArray(),items:packing.items.filter(x=>x.boxIndex===boxIndex).map(x=>({
+        id:x.item.id,instance:x.item.instance,center:x.pose.center,meshCenter:x.mesh.position.toArray(),
+        orientation:x.pose.orientation,
+        width:x.pose.width,length:x.pose.length,height:x.pose.height
+      }))};
+    };
+    window.capturePng=()=>{
+      if (!window.sceneReady) throw Error('Scene is not ready');
+      return renderer.domElement.toDataURL('image/png');
+    };
+    window.renderPageReady=true;
+  </script>
+</body>
+</html>

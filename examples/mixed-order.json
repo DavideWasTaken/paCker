@@ -1,0 +1,62 @@
+{
+  "boxes": [
+    {
+      "id": "small",
+      "width": 200,
+      "length": 150,
+      "height": 80,
+      "max_weight": 10000,
+      "cost": 1,
+      "quantity": -1
+    },
+    {
+      "id": "large",
+      "width": 300,
+      "length": 220,
+      "height": 150,
+      "max_weight": 10000,
+      "cost": 1,
+      "quantity": -1
+    }
+  ],
+  "items": [
+    {
+      "id": "book",
+      "width": 120,
+      "length": 80,
+      "height": 20,
+      "weight": 300,
+      "quantity": 3,
+      "rotation": "flat",
+      "diagonal": true
+    },
+    {
+      "id": "cube",
+      "width": 60,
+      "length": 60,
+      "height": 60,
+      "weight": 150,
+      "quantity": 2,
+      "rotation": "any",
+      "diagonal": true
+    },
+    {
+      "id": "fragile",
+      "width": 140,
+      "length": 50,
+      "height": 30,
+      "weight": 100,
+      "quantity": 2,
+      "rotation": "none",
+      "diagonal": true
+    }
+  ],
+  "options": {
+    "angle_step": 15,
+    "restarts": 8,
+    "max_candidates": 100000,
+    "time_limit_ms": 1000,
+    "seed": 42,
+    "gap": 0
+  }
+}

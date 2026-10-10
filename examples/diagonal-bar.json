@@ -1,0 +1,42 @@
+{
+  "boxes": [
+    {
+      "id": "square",
+      "width": 180,
+      "length": 180,
+      "height": 30,
+      "max_weight": 10000,
+      "cost": 1,
+      "quantity": -1
+    },
+    {
+      "id": "long",
+      "width": 240,
+      "length": 180,
+      "height": 30,
+      "max_weight": 10000,
+      "cost": 1,
+      "quantity": -1
+    }
+  ],
+  "items": [
+    {
+      "id": "bar",
+      "width": 220,
+      "length": 30,
+      "height": 20,
+      "weight": 100,
+      "quantity": 1,
+      "rotation": "flat",
+      "diagonal": true
+    }
+  ],
+  "options": {
+    "angle_step": 15,
+    "restarts": 8,
+    "max_candidates": 100000,
+    "time_limit_ms": 1000,
+    "seed": 42,
+    "gap": 0
+  }
+}

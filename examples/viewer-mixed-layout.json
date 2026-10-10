@@ -1,0 +1,471 @@
+{
+  "request": {
+    "boxes": [
+      {
+        "id": "Square",
+        "width": 180,
+        "length": 180,
+        "height": 90,
+        "quantity": -1
+      }
+    ],
+    "items": [
+      {
+        "id": "Long bar",
+        "width": 220,
+        "length": 25,
+        "height": 20,
+        "quantity": 8,
+        "rotation": "flat"
+      },
+      {
+        "id": "Book",
+        "width": 120,
+        "length": 80,
+        "height": 20,
+        "quantity": 12,
+        "rotation": "flat"
+      },
+      {
+        "id": "Cube",
+        "width": 50,
+        "length": 50,
+        "height": 50,
+        "quantity": 10,
+        "rotation": "any"
+      }
+    ],
+    "options": {
+      "support_mode": "full_base",
+      "max_candidates": 300000,
+      "time_limit_ms": 2000,
+      "seed": 42,
+      "restarts": 8
+    }
+  },
+  "result": {
+    "version": "0.3.3",
+    "status": "complete",
+    "bins": [
+      {
+        "id": "bin-1",
+        "type_id": "Square",
+        "width": 180,
+        "length": 180,
+        "height": 90,
+        "max_weight": 1000000000000,
+        "cost": 1,
+        "weight": 0,
+        "items": [
+          {
+            "id": "Book",
+            "instance": 0,
+            "x": 60,
+            "y": 40,
+            "z": 0,
+            "width": 120,
+            "length": 80,
+            "height": 20,
+            "angle": 0,
+            "weight": 0
+          },
+          {
+            "id": "Book",
+            "instance": 1,
+            "x": 60,
+            "y": 120,
+            "z": 0,
+            "width": 120,
+            "length": 80,
+            "height": 20,
+            "angle": 0,
+            "weight": 0
+          },
+          {
+            "id": "Book",
+            "instance": 2,
+            "x": 60,
+            "y": 40,
+            "z": 20,
+            "width": 120,
+            "length": 80,
+            "height": 20,
+            "angle": 0,
+            "weight": 0
+          },
+          {
+            "id": "Book",
+            "instance": 3,
+            "x": 60,
+            "y": 120,
+            "z": 20,
+            "width": 120,
+            "length": 80,
+            "height": 20,
+            "angle": 0,
+            "weight": 0
+          },
+          {
+            "id": "Book",
+            "instance": 4,
+            "x": 60,
+            "y": 40,
+            "z": 40,
+            "width": 120,
+            "length": 80,
+            "height": 20,
+            "angle": 0,
+            "weight": 0
+          },
+          {
+            "id": "Book",
+            "instance": 5,
+            "x": 60,
+            "y": 120,
+            "z": 40,
+            "width": 120,
+            "length": 80,
+            "height": 20,
+            "angle": 0,
+            "weight": 0
+          },
+          {
+            "id": "Book",
+            "instance": 6,
+            "x": 60,
+            "y": 40,
+            "z": 60,
+            "width": 120,
+            "length": 80,
+            "height": 20,
+            "angle": 0,
+            "weight": 0
+          },
+          {
+            "id": "Book",
+            "instance": 7,
+            "x": 60,
+            "y": 120,
+            "z": 60,
+            "width": 120,
+            "length": 80,
+            "height": 20,
+            "angle": 0,
+            "weight": 0
+          },
+          {
+            "id": "Cube",
+            "instance": 0,
+            "x": 145,
+            "y": 25,
+            "z": 0,
+            "width": 50,
+            "length": 50,
+            "height": 50,
+            "angle": 0,
+            "weight": 0
+          },
+          {
+            "id": "Cube",
+            "instance": 1,
+            "x": 145,
+            "y": 75,
+            "z": 0,
+            "width": 50,
+            "length": 50,
+            "height": 50,
+            "angle": 0,
+            "weight": 0
+          },
+          {
+            "id": "Cube",
+            "instance": 2,
+            "x": 145,
+            "y": 125,
+            "z": 0,
+            "width": 50,
+            "length": 50,
+            "height": 50,
+            "angle": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "id": "bin-2",
+        "type_id": "Square",
+        "width": 180,
+        "length": 180,
+        "height": 90,
+        "max_weight": 1000000000000,
+        "cost": 1,
+        "weight": 0,
+        "items": [
+          {
+            "id": "Book",
+            "instance": 8,
+            "x": 60,
+            "y": 40,
+            "z": 0,
+            "width": 120,
+            "length": 80,
+            "height": 20,
+            "angle": 0,
+            "weight": 0
+          },
+          {
+            "id": "Book",
+            "instance": 9,
+            "x": 60,
+            "y": 120,
+            "z": 0,
+            "width": 120,
+            "length": 80,
+            "height": 20,
+            "angle": 0,
+            "weight": 0
+          },
+          {
+            "id": "Book",
+            "instance": 10,
+            "x": 60,
+            "y": 40,
+            "z": 20,
+            "width": 120,
+            "length": 80,
+            "height": 20,
+            "angle": 0,
+            "weight": 0
+          },
+          {
+            "id": "Book",
+            "instance": 11,
+            "x": 60,
+            "y": 120,
+            "z": 20,
+            "width": 120,
+            "length": 80,
+            "height": 20,
+            "angle": 0,
+            "weight": 0
+          },
+          {
+            "id": "Cube",
+            "instance": 3,
+            "x": 145,
+            "y": 25,
+            "z": 0,
+            "width": 50,
+            "length": 50,
+            "height": 50,
+            "angle": 0,
+            "weight": 0
+          },
+          {
+            "id": "Cube",
+            "instance": 4,
+            "x": 145,
+            "y": 75,
+            "z": 0,
+            "width": 50,
+            "length": 50,
+            "height": 50,
+            "angle": 0,
+            "weight": 0
+          },
+          {
+            "id": "Cube",
+            "instance": 5,
+            "x": 145,
+            "y": 125,
+            "z": 0,
+            "width": 50,
+            "length": 50,
+            "height": 50,
+            "angle": 0,
+            "weight": 0
+          },
+          {
+            "id": "Cube",
+            "instance": 6,
+            "x": 25,
+            "y": 25,
+            "z": 40,
+            "width": 50,
+            "length": 50,
+            "height": 50,
+            "angle": 0,
+            "weight": 0
+          },
+          {
+            "id": "Cube",
+            "instance": 7,
+            "x": 75,
+            "y": 25,
+            "z": 40,
+            "width": 50,
+            "length": 50,
+            "height": 50,
+            "angle": 0,
+            "weight": 0
+          },
+          {
+            "id": "Cube",
+            "instance": 8,
+            "x": 25,
+            "y": 75,
+            "z": 40,
+            "width": 50,
+            "length": 50,
+            "height": 50,
+            "angle": 0,
+            "weight": 0
+          },
+          {
+            "id": "Cube",
+            "instance": 9,
+            "x": 75,
+            "y": 75,
+            "z": 40,
+            "width": 50,
+            "length": 50,
+            "height": 50,
+            "angle": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "id": "bin-3",
+        "type_id": "Square",
+        "width": 180,
+        "length": 180,
+        "height": 90,
+        "max_weight": 1000000000000,
+        "cost": 1,
+        "weight": 0,
+        "items": [
+          {
+            "id": "Long bar",
+            "instance": 0,
+            "x": 86.62058069535207,
+            "y": 86.62058069535206,
+            "z": 0,
+            "width": 220,
+            "length": 25,
+            "height": 20,
+            "angle": 45,
+            "weight": 0
+          },
+          {
+            "id": "Long bar",
+            "instance": 1,
+            "x": 86.62058069535207,
+            "y": 86.62058069535206,
+            "z": 20,
+            "width": 220,
+            "length": 25,
+            "height": 20,
+            "angle": 45,
+            "weight": 0
+          },
+          {
+            "id": "Long bar",
+            "instance": 2,
+            "x": 86.62058069535207,
+            "y": 86.62058069535206,
+            "z": 40,
+            "width": 220,
+            "length": 25,
+            "height": 20,
+            "angle": 45,
+            "weight": 0
+          },
+          {
+            "id": "Long bar",
+            "instance": 3,
+            "x": 86.62058069535207,
+            "y": 86.62058069535206,
+            "z": 60,
+            "width": 220,
+            "length": 25,
+            "height": 20,
+            "angle": 45,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "id": "bin-4",
+        "type_id": "Square",
+        "width": 180,
+        "length": 180,
+        "height": 90,
+        "max_weight": 1000000000000,
+        "cost": 1,
+        "weight": 0,
+        "items": [
+          {
+            "id": "Long bar",
+            "instance": 4,
+            "x": 86.62058069535207,
+            "y": 86.62058069535206,
+            "z": 0,
+            "width": 220,
+            "length": 25,
+            "height": 20,
+            "angle": 45,
+            "weight": 0
+          },
+          {
+            "id": "Long bar",
+            "instance": 5,
+            "x": 86.62058069535207,
+            "y": 86.62058069535206,
+            "z": 20,
+            "width": 220,
+            "length": 25,
+            "height": 20,
+            "angle": 45,
+            "weight": 0
+          },
+          {
+            "id": "Long bar",
+            "instance": 6,
+            "x": 86.62058069535207,
+            "y": 86.62058069535206,
+            "z": 40,
+            "width": 220,
+            "length": 25,
+            "height": 20,
+            "angle": 45,
+            "weight": 0
+          },
+          {
+            "id": "Long bar",
+            "instance": 7,
+            "x": 86.62058069535207,
+            "y": 86.62058069535206,
+            "z": 60,
+            "width": 220,
+            "length": 25,
+            "height": 20,
+            "angle": 45,
+            "weight": 0
+          }
+        ]
+      }
+    ],
+    "unpacked": [],
+    "stats": {
+      "elapsed_ms": 122.44309999793768,
+      "candidates": 300000,
+      "restarts": 8,
+      "box_count": 4,
+      "total_cost": 4,
+      "utilization": 0.3801440329218107,
+      "timed_out": false,
+      "budget_exhausted": true
+    }
+  }
+}

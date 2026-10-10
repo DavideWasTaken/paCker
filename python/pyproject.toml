@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "packer3d"
+version = "0.4.1"
+description = "Fast 3D cuboid packing (native C engine bundled), with independent validation, MCP tools and rendering"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+images = ["playwright==1.63.0"]
+mcp = ["mcp==2.3.0", "pydantic==2.14.0", "jsonschema==4.26.0", "anyio==4.15.1"]
+
+[project.scripts]
+packer-mcp = "packer_adapter.mcp_server:main"
+
+[tool.setuptools]
+packages = ["packer_adapter", "packer3d"]
+include-package-data = false
+
+[tool.setuptools.package-data]
+packer3d = ["bin/packer", "bin/packer.exe", "bin/LICENSE*"]
+packer_adapter = ["assets/render.html", "assets/pose.js", "assets/packing-scene.js", "assets/camera.js", "assets/vendor/*.js", "assets/vendor/LICENSE-three.txt", "schemas/*.json"]

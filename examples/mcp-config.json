@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "packer": {
+      "command": "/absolute/path/to/venv/bin/python",
+      "args": ["-m", "packer_adapter.mcp_server"],
+      "env": {
+        "PACKER_BINARY": "/absolute/path/to/packer"
+      }
+    }
+  }
+}

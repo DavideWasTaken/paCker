@@ -1,0 +1,798 @@
+{
+  "request": {
+    "boxes": [
+      {
+        "id": "small",
+        "width": 153,
+        "length": 111,
+        "height": 55,
+        "max_weight": 10000,
+        "cost": 1,
+        "quantity": -1
+      },
+      {
+        "id": "medium",
+        "width": 211,
+        "length": 167,
+        "height": 132,
+        "max_weight": 10000,
+        "cost": 1,
+        "quantity": -1
+      },
+      {
+        "id": "large",
+        "width": 281,
+        "length": 245,
+        "height": 199,
+        "max_weight": 10000,
+        "cost": 1,
+        "quantity": -1
+      }
+    ],
+    "items": [
+      {
+        "id": "item-0",
+        "width": 27,
+        "length": 57,
+        "height": 17,
+        "weight": 160,
+        "quantity": 1,
+        "rotation": "flat",
+        "diagonal": false
+      },
+      {
+        "id": "item-1",
+        "width": 33,
+        "length": 31,
+        "height": 29,
+        "weight": 250,
+        "quantity": 1,
+        "rotation": "any",
+        "diagonal": false
+      },
+      {
+        "id": "item-2",
+        "width": 20,
+        "length": 45,
+        "height": 39,
+        "weight": 138,
+        "quantity": 1,
+        "rotation": "flat",
+        "diagonal": false
+      },
+      {
+        "id": "item-3",
+        "width": 64,
+        "length": 33,
+        "height": 19,
+        "weight": 221,
+        "quantity": 1,
+        "rotation": "any",
+        "diagonal": false
+      },
+      {
+        "id": "item-4",
+        "width": 29,
+        "length": 57,
+        "height": 23,
+        "weight": 182,
+        "quantity": 1,
+        "rotation": "flat",
+        "diagonal": false
+      },
+      {
+        "id": "item-5",
+        "width": 46,
+        "length": 36,
+        "height": 12,
+        "weight": 270,
+        "quantity": 1,
+        "rotation": "any",
+        "diagonal": false
+      },
+      {
+        "id": "item-6",
+        "width": 20,
+        "length": 33,
+        "height": 17,
+        "weight": 170,
+        "quantity": 1,
+        "rotation": "flat",
+        "diagonal": false
+      },
+      {
+        "id": "item-7",
+        "width": 31,
+        "length": 26,
+        "height": 18,
+        "weight": 27,
+        "quantity": 1,
+        "rotation": "any",
+        "diagonal": false
+      },
+      {
+        "id": "item-8",
+        "width": 58,
+        "length": 36,
+        "height": 19,
+        "weight": 25,
+        "quantity": 1,
+        "rotation": "flat",
+        "diagonal": false
+      },
+      {
+        "id": "item-9",
+        "width": 61,
+        "length": 58,
+        "height": 14,
+        "weight": 287,
+        "quantity": 1,
+        "rotation": "any",
+        "diagonal": false
+      },
+      {
+        "id": "item-10",
+        "width": 61,
+        "length": 24,
+        "height": 33,
+        "weight": 182,
+        "quantity": 1,
+        "rotation": "flat",
+        "diagonal": false
+      },
+      {
+        "id": "item-11",
+        "width": 39,
+        "length": 64,
+        "height": 25,
+        "weight": 309,
+        "quantity": 1,
+        "rotation": "any",
+        "diagonal": false
+      },
+      {
+        "id": "item-12",
+        "width": 30,
+        "length": 55,
+        "height": 25,
+        "weight": 343,
+        "quantity": 1,
+        "rotation": "flat",
+        "diagonal": false
+      },
+      {
+        "id": "item-13",
+        "width": 33,
+        "length": 36,
+        "height": 12,
+        "weight": 290,
+        "quantity": 1,
+        "rotation": "any",
+        "diagonal": false
+      },
+      {
+        "id": "item-14",
+        "width": 22,
+        "length": 22,
+        "height": 39,
+        "weight": 89,
+        "quantity": 1,
+        "rotation": "flat",
+        "diagonal": false
+      },
+      {
+        "id": "item-15",
+        "width": 57,
+        "length": 28,
+        "height": 25,
+        "weight": 154,
+        "quantity": 1,
+        "rotation": "any",
+        "diagonal": false
+      },
+      {
+        "id": "item-16",
+        "width": 31,
+        "length": 26,
+        "height": 39,
+        "weight": 318,
+        "quantity": 1,
+        "rotation": "flat",
+        "diagonal": false
+      },
+      {
+        "id": "item-17",
+        "width": 28,
+        "length": 54,
+        "height": 24,
+        "weight": 200,
+        "quantity": 1,
+        "rotation": "any",
+        "diagonal": false
+      },
+      {
+        "id": "item-18",
+        "width": 42,
+        "length": 35,
+        "height": 18,
+        "weight": 170,
+        "quantity": 1,
+        "rotation": "flat",
+        "diagonal": false
+      },
+      {
+        "id": "item-19",
+        "width": 42,
+        "length": 64,
+        "height": 12,
+        "weight": 47,
+        "quantity": 1,
+        "rotation": "any",
+        "diagonal": false
+      },
+      {
+        "id": "item-20",
+        "width": 43,
+        "length": 27,
+        "height": 18,
+        "weight": 56,
+        "quantity": 1,
+        "rotation": "flat",
+        "diagonal": false
+      },
+      {
+        "id": "item-21",
+        "width": 52,
+        "length": 62,
+        "height": 27,
+        "weight": 80,
+        "quantity": 1,
+        "rotation": "any",
+        "diagonal": false
+      },
+      {
+        "id": "item-22",
+        "width": 55,
+        "length": 40,
+        "height": 39,
+        "weight": 217,
+        "quantity": 1,
+        "rotation": "flat",
+        "diagonal": false
+      },
+      {
+        "id": "item-23",
+        "width": 53,
+        "length": 44,
+        "height": 38,
+        "weight": 96,
+        "quantity": 1,
+        "rotation": "any",
+        "diagonal": false
+      },
+      {
+        "id": "item-24",
+        "width": 40,
+        "length": 41,
+        "height": 27,
+        "weight": 137,
+        "quantity": 1,
+        "rotation": "flat",
+        "diagonal": false
+      },
+      {
+        "id": "item-25",
+        "width": 39,
+        "length": 28,
+        "height": 31,
+        "weight": 185,
+        "quantity": 1,
+        "rotation": "any",
+        "diagonal": false
+      },
+      {
+        "id": "item-26",
+        "width": 57,
+        "length": 35,
+        "height": 14,
+        "weight": 30,
+        "quantity": 1,
+        "rotation": "flat",
+        "diagonal": false
+      },
+      {
+        "id": "item-27",
+        "width": 25,
+        "length": 34,
+        "height": 21,
+        "weight": 117,
+        "quantity": 1,
+        "rotation": "any",
+        "diagonal": false
+      },
+      {
+        "id": "item-28",
+        "width": 28,
+        "length": 31,
+        "height": 29,
+        "weight": 325,
+        "quantity": 1,
+        "rotation": "flat",
+        "diagonal": false
+      },
+      {
+        "id": "item-29",
+        "width": 57,
+        "length": 51,
+        "height": 22,
+        "weight": 201,
+        "quantity": 1,
+        "rotation": "any",
+        "diagonal": false
+      },
+      {
+        "id": "item-30",
+        "width": 60,
+        "length": 21,
+        "height": 38,
+        "weight": 325,
+        "quantity": 1,
+        "rotation": "flat",
+        "diagonal": false
+      },
+      {
+        "id": "item-31",
+        "width": 59,
+        "length": 35,
+        "height": 15,
+        "weight": 101,
+        "quantity": 1,
+        "rotation": "any",
+        "diagonal": false
+      },
+      {
+        "id": "item-32",
+        "width": 29,
+        "length": 62,
+        "height": 21,
+        "weight": 317,
+        "quantity": 1,
+        "rotation": "flat",
+        "diagonal": false
+      }
+    ],
+    "options": {
+      "angle_step": 15,
+      "restarts": 8,
+      "max_candidates": 100000,
+      "time_limit_ms": 1000,
+      "seed": 42,
+      "gap": 0
+    }
+  },
+  "known_fit": {
+    "version": "reference-layout",
+    "status": "complete",
+    "bins": [
+      {
+        "id": "bin-1",
+        "type_id": "medium",
+        "width": 211,
+        "length": 167,
+        "height": 132,
+        "max_weight": 10000,
+        "cost": 1,
+        "weight": 6019,
+        "items": [
+          {
+            "id": "item-23",
+            "instance": 0,
+            "x": 26.5,
+            "y": 22,
+            "z": 0,
+            "width": 53,
+            "length": 44,
+            "height": 38,
+            "angle": 0,
+            "weight": 96
+          },
+          {
+            "id": "item-21",
+            "instance": 0,
+            "x": 84,
+            "y": 13.5,
+            "z": 0,
+            "width": 62,
+            "length": 27,
+            "height": 52,
+            "angle": 0,
+            "weight": 80
+          },
+          {
+            "id": "item-22",
+            "instance": 0,
+            "x": 142.5,
+            "y": 20,
+            "z": 0,
+            "width": 55,
+            "length": 40,
+            "height": 39,
+            "angle": 0,
+            "weight": 217
+          },
+          {
+            "id": "item-29",
+            "instance": 0,
+            "x": 181,
+            "y": 25.5,
+            "z": 0,
+            "width": 22,
+            "length": 51,
+            "height": 57,
+            "angle": 0,
+            "weight": 201
+          },
+          {
+            "id": "item-11",
+            "instance": 0,
+            "x": 12.5,
+            "y": 83,
+            "z": 0,
+            "width": 25,
+            "length": 64,
+            "height": 39,
+            "angle": 0,
+            "weight": 309
+          },
+          {
+            "id": "item-9",
+            "instance": 0,
+            "x": 54,
+            "y": 81.5,
+            "z": 0,
+            "width": 58,
+            "length": 61,
+            "height": 14,
+            "angle": 0,
+            "weight": 287
+          },
+          {
+            "id": "item-10",
+            "instance": 0,
+            "x": 37,
+            "y": 81.5,
+            "z": 14,
+            "width": 24,
+            "length": 61,
+            "height": 33,
+            "angle": 0,
+            "weight": 182
+          },
+          {
+            "id": "item-30",
+            "instance": 0,
+            "x": 59.5,
+            "y": 81,
+            "z": 14,
+            "width": 21,
+            "length": 60,
+            "height": 38,
+            "angle": 0,
+            "weight": 325
+          },
+          {
+            "id": "item-24",
+            "instance": 0,
+            "x": 103,
+            "y": 71.5,
+            "z": 0,
+            "width": 40,
+            "length": 41,
+            "height": 27,
+            "angle": 0,
+            "weight": 137
+          },
+          {
+            "id": "item-12",
+            "instance": 0,
+            "x": 142.5,
+            "y": 15,
+            "z": 39,
+            "width": 55,
+            "length": 30,
+            "height": 25,
+            "angle": 0,
+            "weight": 343
+          },
+          {
+            "id": "item-3",
+            "instance": 0,
+            "x": 201.5,
+            "y": 16.5,
+            "z": 0,
+            "width": 19,
+            "length": 33,
+            "height": 64,
+            "angle": 0,
+            "weight": 221
+          },
+          {
+            "id": "item-15",
+            "instance": 0,
+            "x": 135.5,
+            "y": 79.5,
+            "z": 0,
+            "width": 25,
+            "length": 57,
+            "height": 28,
+            "angle": 0,
+            "weight": 154
+          },
+          {
+            "id": "item-8",
+            "instance": 0,
+            "x": 177,
+            "y": 69,
+            "z": 0,
+            "width": 58,
+            "length": 36,
+            "height": 19,
+            "angle": 0,
+            "weight": 25
+          },
+          {
+            "id": "item-4",
+            "instance": 0,
+            "x": 176.5,
+            "y": 65.5,
+            "z": 19,
+            "width": 57,
+            "length": 29,
+            "height": 23,
+            "angle": 0,
+            "weight": 182
+          },
+          {
+            "id": "item-32",
+            "instance": 0,
+            "x": 31,
+            "y": 129.5,
+            "z": 0,
+            "width": 62,
+            "length": 29,
+            "height": 21,
+            "angle": 0,
+            "weight": 317
+          },
+          {
+            "id": "item-17",
+            "instance": 0,
+            "x": 135,
+            "y": 78,
+            "z": 28,
+            "width": 24,
+            "length": 54,
+            "height": 28,
+            "angle": 0,
+            "weight": 200
+          },
+          {
+            "id": "item-2",
+            "instance": 0,
+            "x": 170.5,
+            "y": 97,
+            "z": 0,
+            "width": 45,
+            "length": 20,
+            "height": 39,
+            "angle": 0,
+            "weight": 138
+          },
+          {
+            "id": "item-25",
+            "instance": 0,
+            "x": 102.5,
+            "y": 65,
+            "z": 27,
+            "width": 39,
+            "length": 28,
+            "height": 31,
+            "angle": 0,
+            "weight": 185
+          },
+          {
+            "id": "item-19",
+            "instance": 0,
+            "x": 94,
+            "y": 136,
+            "z": 0,
+            "width": 64,
+            "length": 42,
+            "height": 12,
+            "angle": 0,
+            "weight": 47
+          },
+          {
+            "id": "item-16",
+            "instance": 0,
+            "x": 15.5,
+            "y": 128,
+            "z": 21,
+            "width": 31,
+            "length": 26,
+            "height": 39,
+            "angle": 0,
+            "weight": 318
+          },
+          {
+            "id": "item-31",
+            "instance": 0,
+            "x": 82.5,
+            "y": 34.5,
+            "z": 0,
+            "width": 59,
+            "length": 15,
+            "height": 35,
+            "angle": 0,
+            "weight": 101
+          },
+          {
+            "id": "item-1",
+            "instance": 0,
+            "x": 46.5,
+            "y": 129.5,
+            "z": 21,
+            "width": 31,
+            "length": 29,
+            "height": 33,
+            "angle": 0,
+            "weight": 250
+          },
+          {
+            "id": "item-26",
+            "instance": 0,
+            "x": 90.5,
+            "y": 132.5,
+            "z": 12,
+            "width": 57,
+            "length": 35,
+            "height": 14,
+            "angle": 0,
+            "weight": 30
+          },
+          {
+            "id": "item-18",
+            "instance": 0,
+            "x": 17.5,
+            "y": 21,
+            "z": 38,
+            "width": 35,
+            "length": 42,
+            "height": 18,
+            "angle": 0,
+            "weight": 170
+          },
+          {
+            "id": "item-0",
+            "instance": 0,
+            "x": 176.5,
+            "y": 64.5,
+            "z": 42,
+            "width": 57,
+            "length": 27,
+            "height": 17,
+            "angle": 0,
+            "weight": 160
+          },
+          {
+            "id": "item-28",
+            "instance": 0,
+            "x": 76,
+            "y": 130.5,
+            "z": 26,
+            "width": 28,
+            "length": 31,
+            "height": 29,
+            "angle": 0,
+            "weight": 325
+          },
+          {
+            "id": "item-20",
+            "instance": 0,
+            "x": 139.5,
+            "y": 136.5,
+            "z": 0,
+            "width": 27,
+            "length": 43,
+            "height": 18,
+            "angle": 0,
+            "weight": 56
+          },
+          {
+            "id": "item-5",
+            "instance": 0,
+            "x": 76,
+            "y": 74,
+            "z": 14,
+            "width": 12,
+            "length": 46,
+            "height": 36,
+            "angle": 0,
+            "weight": 270
+          },
+          {
+            "id": "item-14",
+            "instance": 0,
+            "x": 94,
+            "y": 103,
+            "z": 0,
+            "width": 22,
+            "length": 22,
+            "height": 39,
+            "angle": 0,
+            "weight": 89
+          },
+          {
+            "id": "item-27",
+            "instance": 0,
+            "x": 12.5,
+            "y": 68,
+            "z": 39,
+            "width": 25,
+            "length": 34,
+            "height": 21,
+            "angle": 0,
+            "weight": 117
+          },
+          {
+            "id": "item-7",
+            "instance": 0,
+            "x": 44,
+            "y": 15.5,
+            "z": 38,
+            "width": 18,
+            "length": 31,
+            "height": 26,
+            "angle": 0,
+            "weight": 27
+          },
+          {
+            "id": "item-13",
+            "instance": 0,
+            "x": 99.5,
+            "y": 85,
+            "z": 27,
+            "width": 33,
+            "length": 12,
+            "height": 36,
+            "angle": 0,
+            "weight": 290
+          },
+          {
+            "id": "item-6",
+            "instance": 0,
+            "x": 35,
+            "y": 67.5,
+            "z": 47,
+            "width": 20,
+            "length": 33,
+            "height": 17,
+            "angle": 0,
+            "weight": 170
+          }
+        ]
+      }
+    ],
+    "unpacked": [],
+    "stats": {
+      "elapsed_ms": 28.5136,
+      "candidates": null,
+      "restarts": null,
+      "box_count": 1,
+      "total_cost": 1,
+      "utilization": 0.27246798948419404,
+      "timed_out": false,
+      "budget_exhausted": false
+    }
+  }
+}

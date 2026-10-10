@@ -1,0 +1,44 @@
+{
+  "boxes": [
+    {
+      "id": "Square",
+      "width": 180,
+      "length": 180,
+      "height": 90,
+      "quantity": -1
+    }
+  ],
+  "items": [
+    {
+      "id": "Long bar",
+      "width": 220,
+      "length": 25,
+      "height": 20,
+      "quantity": 8,
+      "rotation": "flat"
+    },
+    {
+      "id": "Book",
+      "width": 120,
+      "length": 80,
+      "height": 20,
+      "quantity": 12,
+      "rotation": "flat"
+    },
+    {
+      "id": "Cube",
+      "width": 50,
+      "length": 50,
+      "height": 50,
+      "quantity": 10,
+      "rotation": "any"
+    }
+  ],
+  "options": {
+    "support_mode": "full_base",
+    "max_candidates": 300000,
+    "time_limit_ms": 2000,
+    "seed": 42,
+    "restarts": 8
+  }
+}

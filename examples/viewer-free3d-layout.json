@@ -1,0 +1,95 @@
+{
+  "request": {
+    "items": [
+      {
+        "id": "rod",
+        "width": 150,
+        "length": 8,
+        "height": 8,
+        "rotation": "free3d"
+      }
+    ],
+    "boxes": [
+      {
+        "id": "cube",
+        "width": 100,
+        "length": 100,
+        "height": 100
+      }
+    ],
+    "options": {
+      "support_mode": "geometric",
+      "time_limit_ms": 1000,
+      "max_candidates": 100000,
+      "restarts": 8,
+      "seed": 42,
+      "angle_step": 15,
+      "clearance": 0
+    }
+  },
+  "result": {
+    "version": "0.3.3-free3d-dev",
+    "schema_version": 2,
+    "support_mode": "geometric",
+    "clearance": 0,
+    "status": "complete",
+    "bins": [
+      {
+        "id": "bin-1",
+        "type_id": "cube",
+        "width": 100,
+        "length": 100,
+        "height": 100,
+        "max_weight": 1000000000000,
+        "cost": 1,
+        "weight": 0,
+        "items": [
+          {
+            "id": "rod",
+            "instance": 0,
+            "width": 150,
+            "length": 8,
+            "height": 8,
+            "weight": 0,
+            "center": [
+              49.9997727829912,
+              49.59414337630237,
+              42.15694697661674
+            ],
+            "orientation": [
+              0.8229494940883636,
+              -0.19248499985462159,
+              -0.3889681863816716,
+              0.36661615484539967
+            ]
+          }
+        ]
+      }
+    ],
+    "unpacked": [],
+    "stats": {
+      "elapsed_ms": 17.106800001114607,
+      "candidates": 504,
+      "restarts": 8,
+      "box_count": 1,
+      "total_cost": 1,
+      "utilization": 0.0096,
+      "timed_out": false,
+      "budget_exhausted": false,
+      "stop_reason": "completed",
+      "seed": 42,
+      "xy_candidates": 0,
+      "xy_elapsed_ms": 1.326199997216463,
+      "options": {
+        "support_mode": "geometric",
+        "clearance": 0,
+        "gap": 0,
+        "seed": 42,
+        "angle_step": 15,
+        "time_limit_ms": 1000,
+        "restarts": 8,
+        "max_candidates": 100000
+      }
+    }
+  }
+}
