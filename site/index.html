@@ -45,6 +45,19 @@
     <p class="fine" id="fine">The engine runs locally in WebAssembly · <span id="mode"></span></p>
   </footer>
 
+  <div id="inspector" class="inspector" hidden role="dialog" aria-modal="true" aria-labelledby="inspector-title">
+    <div class="inspector-bar">
+      <span id="inspector-title">Layout</span>
+      <div class="inspector-actions">
+        <button id="view-iso" type="button">3D</button>
+        <button id="view-top" type="button">Top</button>
+        <button id="inspector-close" type="button" aria-label="Close">✕</button>
+      </div>
+    </div>
+    <div id="inspector-stage" class="inspector-stage"></div>
+    <p class="inspector-hint">Drag to rotate · scroll or pinch to zoom · right-drag or two fingers to move · Esc to close</p>
+  </div>
+
   <script type="module" src="app.js"></script>
 </body>
 </html>

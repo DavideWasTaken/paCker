@@ -1,6 +1,7 @@
 // A small Three.js stage for one packing result: a "composing" animation while the
 // answer is on its way, then the real layout with products dropping into place.
 import * as THREE from 'three';
+import { OrbitControls } from './vendor/OrbitControls.js';
 
 const PALETTE = ['#4fae90', '#f4b860', '#6c8ef5', '#e5786d', '#9b7fe0', '#5cc0d6', '#c6d65a', '#e78fc0', '#7fb56b', '#f19a4a'];
 const ease = t => 1 - Math.pow(1 - t, 3);
@@ -13,8 +14,10 @@ function colour(id) {
 }
 
 export class Stage {
-  constructor(container) {
+  // interactive: no automatic rotation; the visitor orbits, zooms and pans.
+  constructor(container, { interactive = false } = {}) {
     this.container = container;
+    this.interactive = interactive;
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     container.appendChild(this.renderer.domElement);
@@ -29,6 +32,12 @@ export class Stage {
     this.angle = 0.75;
     this.target = new THREE.Vector3();
     this.radius = 1000;
+    if (interactive) {
+      this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+      this.controls.enableDamping = true;
+      this.controls.dampingFactor = 0.08;
+      this.controls.screenSpacePanning = true;
+    }
     this.frame = this.frame.bind(this);
     this.resize = new ResizeObserver(() => this.fit());
     this.resize.observe(container);
@@ -55,6 +64,18 @@ export class Stage {
   frameOn(width, height, depth) {
     this.target.set(0, height * 0.35, 0);
     this.radius = Math.max(width, height * 1.6, depth) * 1.9;
+    if (this.controls) this.view('iso');
+  }
+
+  // Camera presets for the interactive view: 'iso' (three-quarter) or 'top'.
+  view(kind) {
+    const r = this.radius;
+    if (kind === 'top') this.camera.position.set(this.target.x, this.target.y + r * 1.15, this.target.z + 0.001);
+    else this.camera.position.set(this.target.x + Math.cos(0.75) * r, this.target.y + r * 0.62, this.target.z + Math.sin(0.75) * r);
+    this.controls.target.copy(this.target);
+    this.controls.minDistance = r * 0.15;
+    this.controls.maxDistance = r * 4;
+    this.controls.update();
   }
 
   boxFrame(w, l, h, x) {
@@ -94,7 +115,7 @@ export class Stage {
   }
 
   // The real layout: boxes side by side, products drop in from above in packing order.
-  show(result) {
+  show(result, { instant = false } = {}) {
     this.clear();
     this.mode = 'result';
     const bins = result.bins || [];
@@ -114,7 +135,7 @@ export class Stage {
     this.frameOn(total, maxH, maxL);
     placed.sort((a, b) => a.p.z - b.p.z || a.p.y - b.p.y || a.p.x - b.p.x);
     const stagger = Math.min(90, 2200 / Math.max(placed.length, 1));
-    const start = performance.now() + 150;
+    const start = instant ? -1e9 : performance.now() + 150;
     placed.forEach(({ p, bin, x0 }, i) => {
       const mesh = this.piece(p.width, p.height, p.length, colour(p.id));
       const x = x0 - bin.width / 2 + p.x, z = p.y - bin.length / 2, y = p.z + p.height / 2;
@@ -128,10 +149,14 @@ export class Stage {
 
   frame(now) {
     if (this.disposed) return;
-    this.angle += this.mode === 'compose' ? 0.004 : 0.0015;
-    const r = this.radius;
-    this.camera.position.set(this.target.x + Math.cos(this.angle) * r, this.target.y + r * 0.62, this.target.z + Math.sin(this.angle) * r);
-    this.camera.lookAt(this.target);
+    if (this.controls) {
+      this.controls.update();
+    } else {
+      this.angle += this.mode === 'compose' ? 0.004 : 0.0015;
+      const r = this.radius;
+      this.camera.position.set(this.target.x + Math.cos(this.angle) * r, this.target.y + r * 0.62, this.target.z + Math.sin(this.angle) * r);
+      this.camera.lookAt(this.target);
+    }
     const t = now / 1000;
     for (const mesh of this.pieces || []) {
       const d = mesh.userData;
@@ -152,10 +177,21 @@ export class Stage {
     requestAnimationFrame(this.frame);
   }
 
-  dispose() {
+  // keepImage leaves a still of the last view in place of the live canvas.
+  dispose({ keepImage = false } = {}) {
+    if (keepImage && this.pieces?.length) {
+      this.renderer.render(this.scene, this.camera);
+      const still = new Image();
+      still.src = this.renderer.domElement.toDataURL('image/png');
+      still.alt = 'Packing layout';
+      still.className = 'still';
+      this.container.append(still);
+    }
     this.disposed = true;
+    this.controls?.dispose();
     this.resize.disconnect();
     this.clear();
+    this.renderer.domElement.remove();
     this.renderer.dispose();
   }
 }

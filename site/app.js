@@ -77,7 +77,9 @@ function addCard(turn) {
   const card = document.createElement('div');
   card.className = 'card';
   card.innerHTML = `<div class="card-head"><span class="tool">pack_order</span><span class="state">composing the layout…</span></div>
-    <div class="stage"><span class="label">searching positions</span></div><div class="stats" hidden></div>
+    <div class="stage"><span class="label">searching positions</span>
+      <button class="expand" type="button" hidden aria-label="Open the layout full screen"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Explore</button></div>
+    <div class="stats" hidden></div>
     <details hidden><summary>Request and result JSON</summary><pre></pre></details>`;
   turn.cards.append(card);
   const stage = new Stage(card.querySelector('.stage'));
@@ -91,7 +93,7 @@ function addCard(turn) {
     label.textContent = `trying positions… ${tested.toLocaleString('en')}`;
   }, 70);
   stages.push(stage);
-  while (stages.length > MAX_STAGES) stages.shift().dispose();
+  while (stages.length > MAX_STAGES) stages.shift().dispose({ keepImage: true });
   scrollDown();
   return { card, stage };
 }
@@ -107,6 +109,9 @@ function showResult({ card, stage }, request, result) {
     return;
   }
   stage.show(result);
+  const expand = card.querySelector('.expand');
+  expand.hidden = false;
+  expand.addEventListener('click', () => openInspector(result));
   const total = result.bins.reduce((n, b) => n + b.items.length, 0) + result.unpacked.length;
   head.textContent = result.status === 'complete' ? 'packed' : 'partly packed';
   label.textContent = `${result.bins.length} box${result.bins.length === 1 ? '' : 'es'} · 3D preview`;
@@ -123,6 +128,30 @@ function showResult({ card, stage }, request, result) {
   details.hidden = false;
   details.querySelector('pre').textContent = JSON.stringify({ request, result }, null, 2);
 }
+
+// ---- Full-screen inspector: no auto-rotation, free orbit, zoom and pan ----
+let inspector;
+function openInspector(result) {
+  $('inspector').hidden = false;
+  document.body.style.overflow = 'hidden';
+  inspector?.dispose();
+  inspector = new Stage($('inspector-stage'), { interactive: true });
+  inspector.show(result, { instant: true });
+  const n = result.bins.length;
+  $('inspector-title').textContent = `${n} box${n === 1 ? '' : 'es'} · ${result.bins.reduce((k, b) => k + b.items.length, 0)} products`;
+  $('inspector-close').focus();
+}
+function closeInspector() {
+  if ($('inspector').hidden) return;
+  $('inspector').hidden = true;
+  document.body.style.overflow = '';
+  inspector?.dispose();
+  inspector = null;
+}
+$('inspector-close').addEventListener('click', closeInspector);
+$('view-iso').addEventListener('click', () => inspector?.view('iso'));
+$('view-top').addEventListener('click', () => inspector?.view('top'));
+addEventListener('keydown', event => { if (event.key === 'Escape') closeInspector(); });
 
 // ---- Packing ----
 function toRequest(args) {

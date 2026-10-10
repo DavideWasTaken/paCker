@@ -17,7 +17,7 @@ def main():
     subprocess.run([zig, 'cc', '-target', 'wasm32-wasi', '-std=c11', '-O2', '-s', '-Iinclude', '-Ithird_party',
                     *SOURCES, '-o', str(out / 'packer.wasm')], cwd=ROOT, check=True)
     (out / 'vendor').mkdir()
-    for name in ('three.module.js', 'three.core.js', 'LICENSE-three.txt'):
+    for name in ('three.module.js', 'three.core.js', 'OrbitControls.js', 'LICENSE-three.txt'):
         shutil.copy2(ROOT / 'viewer/vendor' / name, out / 'vendor' / name)
     for name in ('logo.svg', 'social-preview.png'):
         shutil.copy2(ROOT / 'docs/images' / name, out / name)

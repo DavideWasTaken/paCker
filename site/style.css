@@ -49,7 +49,7 @@ a { color: inherit; }
 .card-head .tool { font-family: ui-monospace, monospace; color: var(--muted); }
 .card-head .state { color: var(--brand-2); font-weight: 600; }
 .stage { height: 330px; position: relative; background: radial-gradient(ellipse at 50% 35%, color-mix(in srgb, var(--panel) 70%, #e6efe9), var(--panel)); }
-.stage canvas { display: block; width: 100%; height: 100%; }
+.stage canvas, .stage .still { display: block; width: 100%; height: 100%; object-fit: contain; }
 .stage .label { position: absolute; left: 14px; bottom: 12px; font-size: 12px; color: var(--muted); }
 .stats { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--line); }
 .stat { background: var(--bg); border-radius: 999px; padding: 5px 11px; font-size: 13px; }
@@ -69,6 +69,19 @@ a { color: inherit; }
 .composer button { flex: none; width: 40px; height: 40px; border: 0; border-radius: 50%; background: var(--brand); color: var(--lime); cursor: pointer; display: grid; place-items: center; transition: transform .15s, opacity .15s; }
 .composer button:hover { transform: scale(1.06); }
 .composer button:disabled { opacity: .35; cursor: default; transform: none; }
+.expand { position: absolute; top: 10px; right: 10px; z-index: 1; border: 1px solid var(--line); background: color-mix(in srgb, var(--panel) 85%, transparent);
+  color: var(--ink); border-radius: 10px; padding: 6px 10px; font: inherit; font-size: 12.5px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+.expand:hover { border-color: var(--brand-2); }
+.inspector { position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; background: var(--bg); animation: rise .2s ease both; }
+.inspector[hidden] { display: none; }
+.inspector-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px clamp(14px, 3vw, 28px); border-bottom: 1px solid var(--line); font-weight: 600; }
+.inspector-actions { display: flex; gap: 8px; }
+.inspector-actions button { border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 10px; padding: 7px 13px; font: inherit; font-size: 13.5px; cursor: pointer; }
+.inspector-actions button:hover { border-color: var(--brand-2); }
+.inspector-stage { flex: 1; min-height: 0; cursor: grab; background: radial-gradient(ellipse at 50% 40%, color-mix(in srgb, var(--panel) 70%, #e6efe9), var(--bg)); }
+.inspector-stage:active { cursor: grabbing; }
+.inspector-stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.inspector-hint { margin: 0; padding: 10px; text-align: center; font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--line); }
 .fine { text-align: center; color: var(--muted); font-size: 12px; margin: 9px 0 0; }
 
 @media (max-width: 560px) {
