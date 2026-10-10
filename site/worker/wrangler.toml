@@ -6,7 +6,7 @@ compatibility_date = "2026-10-01"
 # Any Groq chat model with tool use; llama-3.3-70b-versatile also works.
 MODEL = "openai/gpt-oss-120b"
 # Comma-separated origins allowed to call the proxy.
-ALLOWED_ORIGINS = "https://davidewastaken.github.io,http://127.0.0.1:8770"
+ALLOWED_ORIGINS = "https://packer.davide.sh,https://davidewastaken.github.io,http://127.0.0.1:8770"
 
 # Each visitor (by IP): 6 AI requests per minute.
 [[ratelimits]]
