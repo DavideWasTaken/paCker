@@ -7,7 +7,7 @@
 **Fast 3D box packing in C.** Give it your box types and products; get back which boxes to use and
 exactly where every product goes.
 
-**[Try it online →](https://davidewastaken.github.io/paCker/)** describe an order and watch it being packed in 3D.
+**[Try it online →](https://packer.davide.sh/)** describe an order and watch it being packed in 3D.
 
 ![Packed boxes in the paCker viewer](docs/images/overview.png)
 
