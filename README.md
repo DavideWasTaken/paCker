@@ -21,6 +21,16 @@ exactly where every product goes.
 - **Use it from anything.** A C library, a JSON CLI, PHP and Python facades, an MCP server for AI agents
   and a 3D viewer.
 
+## Install
+
+```sh
+pip install packer3d                       # Python 3.10+
+composer require davidewastaken/packer     # PHP 8.1+
+```
+
+Both packages bundle the engine for Windows x64 and Linux x64, so no compiler is needed. On other
+platforms, or for the C library and the CLI, build from source as below.
+
 ## Quick start
 
 Build the engine. On Windows, `./setup.ps1` downloads a pinned Zig compiler and builds everything.
@@ -58,7 +68,7 @@ search statistics. Units are yours: millimetres and grams in the examples. On Wi
 **Python** (3.10+, standard library only)
 
 ```python
-from packer3d import Packer          # python/ on sys.path, or the packer3d wheel
+from packer3d import Packer          # pip install packer3d
 
 packer = Packer()
 packer.add_box(id="carton", width=180, length=180, height=30)
@@ -69,7 +79,7 @@ result = packer.pack()
 **PHP** (8.1+)
 
 ```php
-require 'php/src/Packer.php';
+require 'vendor/autoload.php';       // composer require davidewastaken/packer
 
 $packer = new \paCker\Packer();
 $packer->addBox(['id' => 'carton', 'width' => 180, 'length' => 180, 'height' => 30]);
@@ -80,8 +90,8 @@ $result = $packer->pack();
 **C / C++.** Include [`oblique.h`](include/oblique.h), link `liboblique`, and call `op_pack()`.
 There is no JSON layer and no child process. See [examples/ordinary.c](examples/ordinary.c).
 
-The PHP facade and the Python `packer3d` wheel can bundle the native engine, so users need no
-compiler; [docs/publishing.md](docs/publishing.md) explains how to build them.
+From a source checkout, `require 'php/src/Packer.php'` and `python/` on `sys.path` work the same way.
+[docs/publishing.md](docs/publishing.md) explains how the packages are built and released.
 
 ## Rules and options
 
