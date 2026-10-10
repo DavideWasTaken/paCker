@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="docs/images/logo.svg" width="112" alt="paCker logo">
+
 # paCker
 
 **Fast 3D box packing in C.** Give it your box types and products; get back which boxes to use and

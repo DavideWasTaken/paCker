@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="paCker logo">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1b5a4f"/>
+      <stop offset="1" stop-color="#0d322c"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <g stroke="#0a2723" stroke-width="10" stroke-linejoin="round">
+    <polygon points="256,96 412,186 256,276 100,186" fill="#e4fab0"/>
+    <polygon points="100,186 256,276 256,450 100,360" fill="#c6f279"/>
+    <polygon points="256,276 412,186 412,360 256,450" fill="#4fae90"/>
+  </g>
+  <!-- C on the left face: unit square (0..100) mapped onto the face. -->
+  <g transform="matrix(1.56,0.9,0,1.74,100,186)">
+    <path d="M 70 31 A 26 26 0 1 0 70 69" fill="none" stroke="#134a41" stroke-width="15" stroke-linecap="round"/>
+  </g>
+  <!-- Lightning bolt on the right face. -->
+  <g transform="matrix(1.56,-0.9,0,1.74,256,276)">
+    <polygon points="60,10 24,56 47,56 38,92 78,42 55,42 66,10" fill="#ffd84d" stroke="#0a2723" stroke-width="5" stroke-linejoin="round"/>
+  </g>
+</svg>

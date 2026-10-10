@@ -3,15 +3,14 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>paCker · Packing viewer</title>
-  <link rel="icon" href="data:,"><link rel="stylesheet" href="style.css">
+  <link rel="icon" href="logo.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css">
   <script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
 </head>
 <body>
-  <header><div class="brand"><span class="mark">↗</span><div>paCker <span class="sub">PACKING VIEWER</span></div></div><div class="local"><span></span> Local C solver</div></header>
-  <main>
-    <aside>
-      <div class="eyebrow">ORDER INPUT</div><h1>Pack an order</h1>
-      <p class="intro">Enter your boxes and products, then inspect the resulting layout.</p>
+  <header><div class="brand"><img class="logo" src="logo.svg" alt="">paCker</div></header>
+  <main id="main">
+    <aside id="panel">
+      <h1>Pack an order</h1>
       <label for="sample">Example</label><select id="sample">
         <option value="custom" disabled>Custom / imported</option>
         <option value="overview">Two boxes</option><option value="diagonal">Diagonal bar</option><option value="bars">Four narrow bars</option>
@@ -19,32 +18,29 @@
         <option value="stock">Weight and stock</option><option value="rod">3D rod</option>
       </select>
       <div class="input-grid">
-        <label for="support-mode">Support mode <select id="support-mode"><option value="contact">Ordinary · contact</option><option value="full_base">Ordinary · full base</option><option value="geometric">Geometric · 3D</option></select></label>
+        <label for="support-mode">Support <select id="support-mode"><option value="contact">Contact</option><option value="full_base">Full base</option><option value="geometric">Geometric 3D</option></select></label>
         <label for="rotation-default">Default rotation <select id="rotation-default"><option value="flat">Flat</option><option value="none">None</option><option value="any">Any axis</option><option value="free3d">Free 3D</option></select></label>
         <label for="padding">Margin <input id="padding" type="number" min="0" step="any" value="0"></label>
       </div>
-      <p id="padding-info" class="hint" hidden>padding supplied by user. This clearance applies to the geometric layout.</p>
+      <p id="padding-info" class="hint" hidden>3D clearance, padding supplied by user.</p>
       <button class="primary" id="solve">Calculate layout <span>↗</span></button>
       <div id="message" role="status" aria-live="polite"></div>
       <div id="association" class="association">No result yet</div>
-      <details id="data-panel"><summary>Edit request JSON</summary><textarea id="request" spellcheck="false" aria-label="Request JSON"></textarea><p class="hint">Example dimensions use mm and weights use g. Explicit item rotation and diagonal fields take precedence over the default control. Free 3D requires geometric support and diagonal: true.</p></details>
-      <div class="file-row"><button id="import">Import JSON</button><button id="attach-request" disabled>Attach original request</button><button id="export" disabled>Export request + result</button><input hidden type="file" id="file" accept=".json,application/json"><input hidden type="file" id="request-file" accept=".json,application/json"></div>
-      <div class="side-bottom"><div class="eyebrow">GEOMETRIC MODEL</div><p>Rectangular products in rectangular boxes. This viewer shows solver positions; it does not assess physical insertion, strength, or balance.</p></div>
+      <details id="data-panel"><summary>Edit request JSON</summary><textarea id="request" spellcheck="false" aria-label="Request JSON"></textarea><p class="hint">Units: mm and g. Item fields override the defaults above.</p></details>
+      <div class="file-row"><button id="import">Import</button><button id="attach-request" disabled>Attach request</button><button id="export" disabled>Export</button><input hidden type="file" id="file" accept=".json,application/json"><input hidden type="file" id="request-file" accept=".json,application/json"></div>
     </aside>
     <section class="workspace">
-      <div class="work-header"><div><div class="eyebrow">PACKING LAYOUT</div><h2 id="workspace-title">All boxes</h2></div><button id="all-boxes">Back to all boxes</button></div>
-      <div class="metrics"><div><span>Boxes used</span><strong id="boxes">—</strong></div><div><span>Volume used</span><strong id="fill">—</strong></div><div><span>Products packed</span><strong id="packed">—</strong></div><div><span>Solver time</span><strong id="elapsed">—</strong></div></div>
+      <div class="work-header"><h2 id="workspace-title">All boxes</h2><div class="actions"><button id="all-boxes">All boxes</button><button id="toggle-panel" aria-controls="panel" aria-expanded="true">Hide panel</button></div></div>
+      <div class="metrics"><div><span>Boxes</span><strong id="boxes">—</strong></div><div><span>Volume used</span><strong id="fill">—</strong></div><div><span>Products</span><strong id="packed">—</strong></div><div><span>Time</span><strong id="elapsed">—</strong></div></div>
       <div id="box-cards" class="box-cards" aria-label="Boxes"></div>
-      <div class="stage" id="stage"><div class="stage-top"><span id="bin-info">Waiting for a layout</span><div><button id="top">Top view</button><button id="reset">Isometric view</button></div></div><div id="canvas" role="img" aria-label="Three-dimensional packing layout"></div><div class="stage-bottom"><span>Drag to orbit · Scroll to zoom</span><span id="selected-label">Select a product</span></div></div>
-      <div class="file-row"><button id="png" disabled>Export PNG · selected box</button><label for="png-view">Image view</label><select id="png-view"><option value="isometric">Isometric</option><option value="top">Top</option></select></div><p class="hint">With all boxes shown, PNG export uses the first box. The image shows actual packed positions in the selected view.</p>
-      <div class="inspection"><label class="check"><input id="faithful" type="checkbox" checked> Faithful preview · all products at actual positions</label>
-        <div class="controls"><label>Inspection steps <output id="step-value">0 / 0</output><input id="step" type="range" min="0" max="0" value="0" disabled></label><label>Exploded view <output id="explode-value">0%</output><input id="explode" type="range" min="0" max="100" value="0" disabled></label></div>
-        <p class="hint">Steps are for inspection; they do not prove a physical insertion path.</p>
+      <div class="stage" id="stage"><div class="stage-top"><span id="bin-info">Waiting for a layout</span><div><button id="top">Top</button><button id="reset">Isometric</button></div></div><div id="canvas" role="img" aria-label="Three-dimensional packing layout"></div><div class="stage-bottom"><span>Drag to orbit · scroll to zoom</span><span id="selected-label">Select a product</span></div></div>
+      <div class="inspection">
+        <div class="controls"><label>Steps <output id="step-value">0 / 0</output><input id="step" type="range" min="0" max="0" value="0" disabled></label><label>Explode <output id="explode-value">0%</output><input id="explode" type="range" min="0" max="100" value="0" disabled></label></div>
+        <div class="file-row"><label class="check"><input id="faithful" type="checkbox" checked> Final positions</label><select id="png-view" aria-label="Image view"><option value="isometric">Isometric</option><option value="top">Top</option></select><button id="png" disabled>Export PNG</button></div>
       </div>
       <div class="list-header"><h3>Packed products</h3></div><div id="items" class="items"><div class="empty">The result will appear here.</div></div>
       <details id="selected-detail" class="selected-detail" hidden><summary id="selected-detail-title">Selected product details</summary><div id="selected-pose"></div></details>
-      <div class="list-header"><h3>Unplaced products</h3></div><div id="unpacked-items" class="unpacked-items"><div class="empty">None</div></div>
-      <p class="footnote">Dimensions, margins, and volume used come from the solver result. Arrangement is geometric; material behavior and insertion are not simulated.</p>
+      <div class="list-header"><h3>Not packed</h3></div><div id="unpacked-items" class="unpacked-items"><div class="empty">None</div></div>
     </section>
   </main>
   <script type="module" src="app.js"></script>

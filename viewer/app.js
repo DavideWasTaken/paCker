@@ -78,7 +78,7 @@ async function verifyDocument(){
   document.verified=false;
   $('export').disabled=true;$('png').disabled=true;
   $('attach-request').disabled=!(document.source==='legacy'||document.source==='attached');
-  if (!document.request){$('association').textContent='UNVERIFIED · attach the original request to validate';return;}
+  if (!document.request){$('association').textContent='UNVERIFIED · attach the request to check';return;}
   $('association').textContent='Checking layout geometry…';
   const abort=new AbortController();
   const timer=setTimeout(()=>abort.abort(),20000);
@@ -91,7 +91,7 @@ async function verifyDocument(){
     document.verified=true;
     $('export').disabled=false;$('png').disabled=document.result.bins.length===0;
     $('attach-request').disabled=true;
-    $('association').textContent='VERIFIED · original request and packed geometry checked';
+    $('association').textContent='VERIFIED · geometry checked';
     markEditorChanged();
   } catch(error) {
     if (generation!==validationGeneration || document!==documentResult)return;
@@ -302,6 +302,10 @@ $('support-mode').addEventListener('change',updateModeHint);
 $('solve').addEventListener('click',calculate);
 $('request').addEventListener('input',()=>{$('sample').value='custom';markEditorChanged();});
 $('all-boxes').addEventListener('click',()=>{if(packing)focusBox(null);});
+/* The order panel can be hidden to give the layout the full width; ?view opens without it. */
+function setPanel(open){$('main').classList.toggle('panel-hidden',!open);$('toggle-panel').textContent=open?'Hide panel':'Show panel';$('toggle-panel').setAttribute('aria-expanded',String(open));}
+$('toggle-panel').addEventListener('click',()=>setPanel($('main').classList.contains('panel-hidden')));
+if(new URLSearchParams(location.search).has('view'))setPanel(false);
 $('top').addEventListener('click',()=>fitCamera(true));
 $('reset').addEventListener('click',()=>fitCamera());
 $('faithful').addEventListener('change',updateInspection);
