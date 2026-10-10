@@ -8,20 +8,13 @@ MODEL = "openai/gpt-oss-120b"
 # Comma-separated origins allowed to call the proxy.
 ALLOWED_ORIGINS = "https://packer.davide.sh,https://davidewastaken.github.io,http://127.0.0.1:8770"
 
-# Each visitor (by IP): 6 AI requests per minute.
-[[ratelimits]]
-name = "PER_VISITOR"
-namespace_id = "7301"
+# Exact rate limits (src/index.js): per visitor IP 6 per minute and 40 per day;
+# whole demo 15 per minute and 700 per day, below Groq's free 30 per minute and
+# 1,000 per day, which are shared by the whole Groq account.
+[[durable_objects.bindings]]
+name = "LIMITER"
+class_name = "Limiter"
 
-  [ratelimits.simple]
-  limit = 6
-  period = 60
-
-# Whole demo: 25 requests per minute, below Groq's free 30 per minute.
-[[ratelimits]]
-name = "GLOBAL"
-namespace_id = "7302"
-
-  [ratelimits.simple]
-  limit = 25
-  period = 60
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Limiter"]

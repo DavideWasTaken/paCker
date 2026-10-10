@@ -1,4 +1,6 @@
 // paCker demo proxy: keeps the Groq key secret and rate limits visitors.
+import { DurableObject } from 'cloudflare:workers';
+
 // Only the demo's own conversation shape is forwarded, with a fixed system prompt,
 // model and tool list, so the endpoint cannot be used as a general free LLM API.
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
@@ -6,6 +8,29 @@ const MAX_MESSAGES = 16;
 const MAX_TEXT = 4000;
 const MAX_TOOL_RESULT = 12000;
 const MAX_BODY = 64 * 1024;
+const MINUTE = 60 * 1000, DAY = 24 * 60 * MINUTE;
+const VISITOR_RULES = [{ limit: 6, window: MINUTE }, { limit: 40, window: DAY }];
+const GLOBAL_RULES = [{ limit: 15, window: MINUTE }, { limit: 700, window: DAY }];
+
+// Exact sliding-window counter: one object per visitor IP, one for the whole demo.
+export class Limiter extends DurableObject {
+  async hit(rules) {
+    const now = Date.now(), longest = Math.max(...rules.map(r => r.window));
+    const hits = ((await this.ctx.storage.get('hits')) || []).filter(t => now - t < longest);
+    for (const rule of rules) {
+      const recent = hits.filter(t => now - t < rule.window);
+      if (recent.length >= rule.limit) {
+        await this.ctx.storage.put('hits', hits);
+        return { ok: false, retry_after: Math.ceil((recent[0] + rule.window - now) / 1000), window: rule.window };
+      }
+    }
+    hits.push(now);
+    await this.ctx.storage.put('hits', hits);
+    return { ok: true };
+  }
+}
+
+const limiter = (env, name) => env.LIMITER.get(env.LIMITER.idFromName(name));
 
 const SYSTEM = `You are the assistant of the paCker demo. paCker is a fast 3D box packing engine.
 The user describes boxes and products in natural language. Turn the description into one call of the
@@ -113,12 +138,10 @@ export default {
     if (!allowed.includes(origin)) return reply({ error: 'forbidden_origin' }, 403, permitted);
 
     const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
-    if (!(await env.PER_VISITOR.limit({ key: ip })).success) {
-      return reply({ error: 'rate_limited', scope: 'visitor', retry_after: 60 }, 429, origin);
-    }
-    if (!(await env.GLOBAL.limit({ key: 'all' })).success) {
-      return reply({ error: 'rate_limited', scope: 'global', retry_after: 60 }, 429, origin);
-    }
+    const visitor = await limiter(env, `ip:${ip}`).hit(VISITOR_RULES);
+    if (!visitor.ok) return reply({ error: 'rate_limited', scope: visitor.window === DAY ? 'visitor_day' : 'visitor', retry_after: visitor.retry_after }, 429, origin);
+    const overall = await limiter(env, 'global').hit(GLOBAL_RULES);
+    if (!overall.ok) return reply({ error: 'rate_limited', scope: 'global', retry_after: overall.retry_after }, 429, origin);
     if (Number(request.headers.get('Content-Length') || 0) > MAX_BODY) return reply({ error: 'too_large' }, 413, origin);
 
     let messages;

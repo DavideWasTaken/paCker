@@ -261,7 +261,7 @@ async function send(text, preset) {
       } catch (error) {
         const fallback = preset?.request || jsonOrder(text);
         const reason = error instanceof RateLimited
-          ? (error.scope === 'visitor' ? 'You reached the demo limit of 6 AI messages per minute.' : 'The demo AI is busy right now.')
+          ? ({ visitor: 'You reached the demo limit of 6 AI messages per minute.', visitor_day: 'You reached the demo limit of 40 AI messages per day.' }[error.scope] || 'The demo AI is busy right now.')
           : 'The AI is not reachable right now.';
         if (fallback && !turn.cards.children.length) {
           const result = await pack(turn, fallback);
