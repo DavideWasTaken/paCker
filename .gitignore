@@ -11,3 +11,5 @@ python/packer_adapter/assets/
 *.obj
 *.pdb
 *.ilk
+node_modules/
+.wrangler/

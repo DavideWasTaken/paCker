@@ -1,0 +1,27 @@
+name = "packer-demo"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+
+[vars]
+# Any Groq chat model with tool use; llama-3.3-70b-versatile also works.
+MODEL = "openai/gpt-oss-120b"
+# Comma-separated origins allowed to call the proxy.
+ALLOWED_ORIGINS = "https://davidewastaken.github.io,http://127.0.0.1:8770"
+
+# Each visitor (by IP): 6 AI requests per minute.
+[[ratelimits]]
+name = "PER_VISITOR"
+namespace_id = "7301"
+
+  [ratelimits.simple]
+  limit = 6
+  period = 60
+
+# Whole demo: 25 requests per minute, below Groq's free 30 per minute.
+[[ratelimits]]
+name = "GLOBAL"
+namespace_id = "7302"
+
+  [ratelimits.simple]
+  limit = 25
+  period = 60

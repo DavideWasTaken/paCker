@@ -6,6 +6,7 @@ build/packer.exe when present (else a Zig cross build) and a static Linux build.
 Usage: python tools/build_composer.py [dir]
 """
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -40,7 +41,9 @@ Options include `support_mode` (`stable` by default, `contact`, `full_base`, `ge
 searching until the time limit) and `gap`. On other platforms pass your own build:
 `new \\paCker\\Packer('/path/to/packer')` or set `PACKER_BINARY`.
 
-Engine {version}. MIT licensed; the bundled engine includes cJSON (MIT, see LICENSE-cJSON).
+Engine {version}. Source, documentation and the C library: https://github.com/DavideWasTaken/paCker
+
+MIT licensed; the bundled engine includes cJSON (MIT, see LICENSE-cJSON).
 """
 
 
@@ -48,7 +51,8 @@ def main():
     output = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / f'release/{VERSION}/composer'
     windows = windows_binary()
     if output.exists():
-        shutil.rmtree(output)
+        # Git marks its objects read-only on Windows.
+        shutil.rmtree(output, onerror=lambda function, path, _: (os.chmod(path, 0o700), function(path)))
     (output / 'src').mkdir(parents=True)
     (output / 'bin').mkdir()
     shutil.copy2(ROOT / 'php/src/Packer.php', output / 'src/Packer.php')
@@ -61,7 +65,7 @@ def main():
     composer = {
         'name': NAME,
         'description': 'Fast 3D cuboid packing with a bundled native engine: boxes, stock, weight, rotations, stable support',
-        'type': 'library', 'license': 'MIT',
+        'type': 'library', 'license': 'MIT', 'homepage': 'https://github.com/DavideWasTaken/paCker',
         'keywords': ['bin packing', 'box packing', '3d packing', 'shipping', 'cuboid'],
         'require': {'php': '>=8.1', 'ext-json': '*'},
         'autoload': {'psr-4': {'paCker\\': 'src/'}, 'files': ['src/Packer.php']},

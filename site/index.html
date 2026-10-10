@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>paCker · fast 3D box packing</title>
+  <meta name="description" content="paCker packs products into the fewest boxes in milliseconds. Try it: describe an order and watch it being packed in 3D, right in your browser.">
+  <meta property="og:title" content="paCker · fast 3D box packing">
+  <meta property="og:description" content="Describe an order, watch it being packed in 3D. C engine, running in your browser.">
+  <meta property="og:image" content="https://davidewastaken.github.io/paCker/social-preview.png">
+  <meta name="theme-color" content="#134a41">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="./"><img src="logo.svg" alt="">paCker</a>
+    <nav>
+      <a href="https://github.com/DavideWasTaken/paCker">GitHub</a>
+      <a href="https://pypi.org/project/packer3d/">PyPI</a>
+      <a href="https://packagist.org/packages/davidewastaken/packer">Packagist</a>
+    </nav>
+  </header>
+
+  <main id="chat" class="chat empty">
+    <section class="hero">
+      <img class="hero-logo" src="logo.svg" alt="">
+      <h1>What do you need to pack?</h1>
+      <p>Describe boxes and products. paCker finds the fewest boxes and shows where every product goes, right here in your browser.</p>
+    </section>
+    <div id="thread" class="thread" aria-live="polite"></div>
+  </main>
+
+  <footer class="composer-wrap">
+    <div class="suggestions" id="suggestions"></div>
+    <form id="composer" class="composer">
+      <textarea id="prompt" rows="1" placeholder="Describe boxes and products…" aria-label="Describe your order"></textarea>
+      <button id="send" type="submit" aria-label="Pack">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </form>
+    <p class="fine" id="fine">The engine runs locally in WebAssembly · <span id="mode"></span></p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
