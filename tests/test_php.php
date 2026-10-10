@@ -97,7 +97,7 @@ try {
     $empty = (new Packer($binary))->pack();
     file_put_contents($response, json_encode($empty, JSON_THROW_ON_ERROR));
     check((new Packer(PHP_BINARY))->pack() === $empty, 'Controlled child should emit a valid empty result');
-    foreach (['0.1.0', '0.2.0', '0.3.0', '0.3.1', '0.3.2', '0.3.3', '0.4.0', '0.4.1', '0.5.0'] as $version) {
+    foreach (['0.1.0', '0.2.0', '0.3.0', '0.3.1', '0.3.2', '0.3.3', '0.4.0', '0.4.1', '0.5.0', '0.5.1'] as $version) {
         $compatible = $empty;
         $compatible['version'] = $version;
         file_put_contents($response, json_encode($compatible, JSON_THROW_ON_ERROR));

@@ -53,7 +53,7 @@ def wheel(binary, name, platform, output):
 
 
 def main():
-    output = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT / 'release/0.5.0/python'
+    output = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT / 'release/0.5.1/python'
     output.mkdir(parents=True, exist_ok=True)
     wheel(windows_binary(), 'packer.exe', 'win_amd64', output)
     wheel(linux_static(), 'packer', 'manylinux2014_x86_64.musllinux_1_1_x86_64', output)

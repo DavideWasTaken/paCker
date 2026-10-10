@@ -30,7 +30,7 @@ support, gravity, friction, deformation, padding design or insertion paths.
 Search is finite and heuristic. A partial result does not prove impossibility.
 
 Schema 2 includes `schema_version: 2`, `support_mode: "geometric"`, effective
-`clearance`, and the engine `version` (`0.5.0-free3d-dev` during development).
+`clearance`, and the engine `version` (`0.5.1-free3d-dev` during development).
 Every item retains its original `width`, `length`, `height`, identity, instance
 and weight. Its pose is a `center: [cx,cy,cz]` and an active local-to-container
 `orientation: [qx,qy,qz,qw]`. Coordinates are right-handed with X as width, Y as

@@ -7,7 +7,7 @@ extern "C" {
 #define OP_MAX_ITEMS 256
 #define OP_MAX_BOXES 64
 #define OP_ID_SIZE 64
-#define OP_VERSION "0.5.0"
+#define OP_VERSION "0.5.1"
 typedef enum { OP_NONE=0, OP_FLAT=1, OP_ANY=2 } OpRotation;
 /* STABLE (default): on the floor, or the footprint centre lies over the
    convex hull of the product's contacts with lower top faces, so a uniform

@@ -26,7 +26,7 @@ archives include their geometry code; there is no additional geometry archive
 to link manually.
 Use the matching header and library. `OP3_VERSION` identifies the header
 version; `op3_version()` returns the version of the linked geometric engine,
-currently `0.5.0-free3d-dev`. Ordinary responses use `0.5.0`. The geometric library now contains the ordinary engine too: for
+currently `0.5.1-free3d-dev`. Ordinary responses use `0.5.1`. The geometric library now contains the ordinary engine too: for
 orders without `free3d` and with zero clearance, `op3_pack()` seeds its search
 with an `op_pack()` layout (contact support, improvement on, half the budget);
 geometric mode itself has no support rule.

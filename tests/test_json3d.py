@@ -33,7 +33,7 @@ class Schema2Tests(unittest.TestCase):
 
     def test_rod_and_effective_options(self):
         result = self.solve(REQUEST)
-        self.assertEqual(result['version'], '0.5.0-free3d-dev')
+        self.assertEqual(result['version'], '0.5.1-free3d-dev')
         self.assertEqual(result['schema_version'], 2)
         self.assertEqual(result['status'], 'complete')
         self.assertEqual(result['clearance'], 0)
@@ -58,7 +58,7 @@ class Schema2Tests(unittest.TestCase):
         request['options']['support_mode'] = 'full_base'
         self.assertEqual(self.call(request)[1]['support_mode'], 'full_base')
         self.assertNotIn('schema_version', a)
-        self.assertEqual(a['version'], '0.5.0')
+        self.assertEqual(a['version'], '0.5.1')
 
     def test_forbidden_options_and_strict_fields(self):
         mutations = [lambda r: r['options'].update(support_mode='full_base'),

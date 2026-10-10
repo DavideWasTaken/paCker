@@ -6,7 +6,7 @@ extern "C" {
 #endif
 
 /* Separate API: no change to the ordinary Op* ABI. No physics/support rule. */
-#define OP3_VERSION "0.5.0-free3d-dev"
+#define OP3_VERSION "0.5.1-free3d-dev"
 #define OP3_MAX_ITEMS 256
 #define OP3_MAX_BOXES 64
 #define OP3_ID_SIZE 64

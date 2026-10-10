@@ -15,7 +15,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_wheels import ROOT, linux_static, windows_binary  # noqa: E402
 
-VERSION = '0.5.0'
+VERSION = '0.5.1'
 NAME = 'davidewastaken/packer'
 README = """# paCker for PHP
 
